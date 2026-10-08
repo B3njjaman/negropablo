@@ -246,8 +246,8 @@ document.querySelectorAll('.vfilter[data-row]').forEach((group) => {
 // Planes: veces por semana × período de pago
 const detallePlan = (plan, veces) => {
   const sesiones = veces * 4;
-  // El Online de 3 veces por semana no muestra conteo de entrenamientos.
-  if (plan === 'online') return { ses: veces === 3 ? '' : `${sesiones} entrenamientos al mes`, valor: 'Rutina + seguimiento online' };
+  // El Online no muestra conteo de entrenamientos.
+  if (plan === 'online') return { ses: '', valor: 'Rutina + seguimiento online' };
   if (plan === 'hibrido') return { ses: `2 presenciales + ${sesiones - 2} online`, valor: '2 sesiones presenciales al mes' };
   return { ses: `${sesiones} sesiones 1:1 al mes`, valor: `Valor sesión ${clp(PRECIOS.presencial[veces] / sesiones)}` };
 };
