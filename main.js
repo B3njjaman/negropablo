@@ -220,18 +220,44 @@ const counter = new IntersectionObserver(
 );
 document.querySelectorAll('[data-count]').forEach((el) => counter.observe(el));
 
-// Videos: solo se reproducen mientras están visibles
-const player = new IntersectionObserver(
+// Videos automáticos: se precargan antes de llegar, corren apenas asoman en
+// pantalla y no se pueden pausar con un clic (si algo los pausa y siguen a la
+// vista, vuelven a correr). Fuera de pantalla se pausan para ahorrar batería.
+const enPantalla = new WeakSet();
+const correr = (v) => { v.muted = true; v.play().catch(() => {}); };
+const precargador = new IntersectionObserver(
   (entries) => entries.forEach((e) => {
-    if (e.isIntersecting) e.target.play().catch(() => {});
-    else e.target.pause();
+    if (!e.isIntersecting) return;
+    const v = e.target;
+    // load() cancela un play() en curso: si ya está a la vista, se relanza.
+    if (v.preload !== 'auto') { v.preload = 'auto'; v.load(); if (enPantalla.has(v)) correr(v); }
+    precargador.unobserve(v);
   }),
-  { threshold: 0.25 }
+  { rootMargin: '700px 0px' }
 );
-document.querySelectorAll('video[data-auto]').forEach((v) => {
+const reproductor = new IntersectionObserver(
+  (entries) => entries.forEach((e) => {
+    if (e.isIntersecting) { enPantalla.add(e.target); correr(e.target); }
+    else { enPantalla.delete(e.target); e.target.pause(); }
+  }),
+  { threshold: 0.01 }
+);
+const autos = [...document.querySelectorAll('video[data-auto]')];
+autos.forEach((v) => {
   v.muted = true;
-  player.observe(v);
+  v.playsInline = true;
+  v.removeAttribute('controls');
+  v.disablePictureInPicture = true;
+  v.addEventListener('pause', () => { if (enPantalla.has(v) && !document.hidden) correr(v); });
+  v.addEventListener('canplay', () => { if (enPantalla.has(v)) correr(v); });
+  precargador.observe(v);
+  reproductor.observe(v);
 });
+// Si el navegador bloqueó la reproducción (ahorro de batería en iPhone), el
+// primer toque en cualquier parte la reactiva; también al volver a la pestaña.
+const reanudarVisibles = () => autos.forEach((v) => { if (enPantalla.has(v) && v.paused) correr(v); });
+['touchstart', 'pointerdown', 'scroll'].forEach((ev) => window.addEventListener(ev, reanudarVisibles, { passive: true }));
+document.addEventListener('visibilitychange', () => { if (!document.hidden) reanudarVisibles(); });
 
 // Visor de video a pantalla completa
 const lb = document.querySelector('.lb');
@@ -240,14 +266,18 @@ if (lb) {
   const close = () => {
     lb.classList.remove('on');
     lbVideo.pause();
+    lbVideo.removeAttribute('src');
+    lbVideo.load();
   };
   document.querySelectorAll('[data-src]').forEach((clip) =>
     clip.addEventListener('click', () => {
       lbVideo.src = clip.dataset.src;
       lb.classList.add('on');
-      lbVideo.play().catch(() => {});
+      lbVideo.play().catch(() => { lbVideo.muted = true; lbVideo.play().catch(() => {}); });
     })
   );
+  // Un clic sobre el video no lo pausa: si algo lo detiene con el visor abierto, sigue.
+  lbVideo.addEventListener('pause', () => { if (lb.classList.contains('on')) lbVideo.play().catch(() => {}); });
   lb.querySelector('.lb-x').addEventListener('click', close);
   lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
@@ -339,9 +369,14 @@ document.querySelectorAll('.stories').forEach((root) => {
   const sincronizarVideos = () => slides.forEach((s, i) => {
     const v = s.querySelector('video');
     if (!v) return;
-    if (i === actual && visible) v.play().catch(() => {});
-    else v.pause();
+    if (i === actual && visible) { v.muted = true; v.play().catch(() => {}); } else v.pause();
   });
+  slides.forEach((s, i) => {
+    const v = s.querySelector('video');
+    if (!v) return;
+    v.addEventListener('pause', () => { if (i === actual && visible && !document.hidden) v.play().catch(() => {}); });
+  });
+  window.addEventListener('touchstart', () => { if (visible) sincronizarVideos(); }, { passive: true });
 
   const mostrar = (n) => {
     actual = (n + slides.length) % slides.length;
@@ -378,7 +413,7 @@ document.querySelectorAll('.stories').forEach((root) => {
 
   // Precarga cuando la sección está a ~600px de entrar.
   new IntersectionObserver(([e]) => {
-    if (e.isIntersecting) { precargar(actual); precargar(actual + 1); }
+    if (e.isIntersecting) { precargar(actual); precargar(actual + 1); sincronizarVideos(); }
   }, { rootMargin: '600px 0px' }).observe(root);
 
   // Corre apenas asoma en pantalla; la barra de progreso solo avanza mientras se ve.
@@ -386,7 +421,7 @@ document.querySelectorAll('.stories').forEach((root) => {
     visible = e.isIntersecting;
     root.classList.toggle('paused', !visible);
     sincronizarVideos();
-  }, { threshold: 0.15 }).observe(root);
+  }, { threshold: 0.01 }).observe(root);
 
   root.classList.add('paused');
   mostrar(0);

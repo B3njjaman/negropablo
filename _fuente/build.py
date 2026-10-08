@@ -153,7 +153,7 @@ FOOT = f'''
 
 <div class="lb" role="dialog" aria-label="Video">
   <button class="lb-x" aria-label="Cerrar">✕</button>
-  <video controls playsinline></video>
+  <video playsinline loop disablepictureinpicture></video>
 </div>
 
 <script src="main.js?v={VER}"></script>
