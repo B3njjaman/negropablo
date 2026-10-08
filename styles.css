@@ -823,3 +823,32 @@ section { padding: 110px 0; position: relative; }
 @media (max-width: 640px) { .pop-slide video.pop-media { min-height: 230px; } }
 /* Mientras la meta está en pantalla, el botón del asistente se esconde (tapaba el CTA). */
 .sin-lanzador .np-launch { opacity: 0; pointer-events: none; transform: translateY(16px); }
+
+/* Meta compacta: cabe completa en la pantalla de un teléfono. */
+.pop-slide .pop-media, .pop-slide video.pop-media, .pop-slide img.pop-media { flex: none; height: 230px; min-height: 0; max-height: none; aspect-ratio: auto; }
+.pop-slide .popup-txt { padding: 16px 22px 8px; }
+.popup-txt h3 { margin-top: 8px; font-size: 20px; }
+.popup-txt .pop-p { margin-top: 6px; font-size: 13.5px; }
+.pop-stats { margin-top: 10px; gap: 8px; }
+.pop-stats .stat { padding: 10px 12px; }
+.pop-stats .stat b { font-size: 17px; }
+.pop-stats .stat-txt b { font-size: 13.5px; }
+.pop-stats .stat span { font-size: 11.5px; }
+.popup-txt .btn-s { margin-top: 10px; }
+.pop-dots { padding: 6px 0 10px; }
+.pop-cta { padding: 0 20px 16px; }
+.pop-cta .btn { height: 46px; }
+.pop-flecha { top: 115px; }
+@media (max-width: 640px) {
+  .pop-slide .pop-media, .pop-slide video.pop-media, .pop-slide img.pop-media { height: 170px; }
+  .pop-slide .popup-txt { padding: 14px 16px 6px; }
+  .popup-txt p { font-size: 17px; }
+  .popup-txt .grad { font-size: 21px; }
+  .popup-txt h3 { font-size: 18px; }
+  .popup-txt .pop-p { font-size: 12.5px; }
+  .firma { margin: 6px 0 0; }
+  .pop-flecha { top: 85px; }
+}
+/* Las fotos rellenan hasta el alto del slide del video (que marca el tamaño). */
+.pop-slide img.pop-media { flex: 1 1 0; height: auto; min-height: 230px; }
+@media (max-width: 640px) { .pop-slide img.pop-media { min-height: 170px; } }
