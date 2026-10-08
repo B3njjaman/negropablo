@@ -3,11 +3,9 @@
    Asistente que detecta necesidades y recomienda un plan
    ═══════════════════════════════════════════════ */
 (() => {
-  const PLANES = {
-    online: { nombre: 'Plan Online', precio: '$XX.XXX / mes' },
-    hibrido: { nombre: 'Plan Híbrido', precio: '$XX.XXX / mes' },
-    personalizado: { nombre: 'Plan Personalizado', precio: '$XX.XXX / mes' },
-  };
+  // Precios y nombres vienen de PRECIOS en main.js.
+  const vecesPorSemana = (a) => (a.dias === '2' ? 2 : 3);
+  const nombrePlan = (plan) => `Plan ${PRECIOS[plan].nombre}`;
 
   const CONSEJOS = {
     rodilla: 'Rodilla: ajustamos rango y carga en sentadillas y zancadas, y fortalecemos cuádriceps y glúteo para protegerla.',
@@ -151,27 +149,27 @@
 
   // ── Recomendación ──
   const recomendar = (a) => {
-    const s = { online: 0, hibrido: 0, personalizado: 0 };
-    const preferido = { online: 'online', mixto: 'hibrido', presencial: 'personalizado' }[a.modalidad];
+    const s = { online: 0, hibrido: 0, presencial: 0 };
+    const preferido = { online: 'online', mixto: 'hibrido', presencial: 'presencial' }[a.modalidad];
     if (preferido) s[preferido] += 3;
-    s[{ solo: 'online', revision: 'hibrido', exigencia: 'personalizado' }[a.apoyo]] += 2;
-    if (a.experiencia === 'cero') { s.hibrido += 1; s.personalizado += 1; }
+    s[{ solo: 'online', revision: 'hibrido', exigencia: 'presencial' }[a.apoyo]] += 2;
+    if (a.experiencia === 'cero') { s.hibrido += 1; s.presencial += 1; }
     if (a.lugar === 'casa') s.online += 2;
     if (a.lesion === 'si' && a.estado === 'leve') s.hibrido += 1;
-    if (esSeria(a) || ALERTAS.test(a.detalle || '')) { s.personalizado += 2; s.hibrido += 1; s.online -= 2; }
-    return ['hibrido', 'personalizado', 'online'].reduce((best, k) => (s[k] > s[best] ? k : best));
+    if (esSeria(a) || ALERTAS.test(a.detalle || '')) { s.presencial += 2; s.hibrido += 1; s.online -= 2; }
+    return ['hibrido', 'presencial', 'online'].reduce((best, k) => (s[k] > s[best] ? k : best));
   };
 
   const razones = (a, plan) => {
     const r = [];
     if (plan === 'online') r.push('Te da estructura y seguimiento sin depender de horarios.');
     if (plan === 'hibrido') r.push('Combina sesiones presenciales para pulir técnica con seguimiento online el resto de la semana.');
-    if (plan === 'personalizado') r.push('Entrenas con Pablo al lado en cada sesión: técnica y cargas controladas en tiempo real.');
+    if (plan === 'presencial') r.push('Entrenas con Pablo al lado en cada sesión: técnica y cargas controladas en tiempo real.');
     if (a.experiencia === 'cero') r.push('Al partir de cero, tener guía directa acelera mucho el aprendizaje de la técnica.');
     if (esSeria(a)) r.push('Por tu lesión conviene que las sesiones sean supervisadas.');
     else if (a.lesion === 'si') r.push('Adaptamos los ejercicios a tu lesión desde el primer día.');
     if (a.lugar === 'casa') r.push('La rutina se adapta al equipamiento que tengas en casa.');
-    if (a.apoyo === 'exigencia' && plan !== 'personalizado') r.push('Si buscas que te exijan en cada sesión, también puedes subir al Personalizado.');
+    if (a.apoyo === 'exigencia' && plan !== 'presencial') r.push('Si buscas que te exijan en cada sesión, también puedes subir al Presencial 1:1.');
     return r;
   };
 
@@ -212,7 +210,7 @@
       `• Días: ${L('dias')} · Lugar: ${L('lugar')}`,
       `• Modalidad: ${L('modalidad')}`,
       `• Acompañamiento: ${L('apoyo')}`,
-      `Me recomendó el ${PLANES[plan].nombre}. ¿Conversamos?`,
+      `Me recomendó el ${nombrePlan(plan)}, ${vecesPorSemana(a)} veces por semana (${clp(PRECIOS[plan][vecesPorSemana(a)])} al mes). ¿Conversamos?`,
     ];
     return lineas.join('\n');
   };
@@ -338,15 +336,15 @@
 
   const resultado = (a) => {
     const plan = recomendar(a);
-    const p = PLANES[plan];
+    const veces = vecesPorSemana(a);
     const lesion = a.lesion === 'si'
       ? `<div class="np-box${esSeria(a) ? ' np-warn' : ''}"><b>Tu lesión</b>“${esc(a.detalle)}” · ${esc(etiqueta(paso('estado'), a.estado))}. ${esSeria(a) ? 'Trae el visto bueno de tu médico o kine para la primera sesión.' : 'La adaptamos desde el día uno.'}</div>`
       : '';
     return `
       <div class="np-result">
         <span class="np-tag">Tu plan recomendado</span>
-        <h4>${p.nombre}</h4>
-        <p class="np-price">${p.precio}</p>
+        <h4>${nombrePlan(plan)}</h4>
+        <p class="np-price">${clp(PRECIOS[plan][veces])} / mes · ${veces} veces por semana</p>
         <ul>${razones(a, plan).map((r) => `<li>${r}</li>`).join('')}</ul>
         <div class="np-box"><b>Tu semana</b>${semana(a)}</div>
         ${lesion}

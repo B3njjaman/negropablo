@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Planes · Negro Pablo</title>
-  <meta name="description" content="Planes de entrenamiento online, híbrido y personalizado. Mensuales y sin permanencia.">
+  <meta name="description" content="Planes Online desde $59.000, Híbrido desde $99.000 y Presencial 1:1 desde $190.000 al mes. Mensual, trimestral o semestral.">
   <meta name="theme-color" content="#060606">
   <meta property="og:title" content="Planes · Negro Pablo">
-  <meta property="og:description" content="Planes de entrenamiento online, híbrido y personalizado. Mensuales y sin permanencia.">
-  <meta property="og:image" content="assets/img/pablo.jpg">
+  <meta property="og:description" content="Planes Online desde $59.000, Híbrido desde $99.000 y Presencial 1:1 desde $190.000 al mes. Mensual, trimestral o semestral.">
+  <meta property="og:image" content="assets/img/pablo-handball-salto.jpg">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop offset='0' stop-color='%23e63946'/><stop offset='1' stop-color='%23ff6b35'/></linearGradient></defs><rect width='64' height='64' rx='18' fill='url(%23g)'/><text x='32' y='42' font-family='Arial' font-weight='800' font-size='26' fill='white' text-anchor='middle'>NP</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,7 @@
       <a href="index.html" class="logo"><b>NP</b>Negro Pablo</a>
       <nav class="nav-d" aria-label="Principal">
         <a href="sobre-mi.html">Sobre mí</a>
-        <a href="entrenamientos.html">Entrenamientos</a>
+        <a href="clientes.html">Clientes y entrenamiento</a>
         <a href="planes.html" class="on" aria-current="page">Planes</a>
         <a href="contacto.html">Contacto</a>
         <a class="btn btn-p btn-s" data-wa="Hola Pablo! Quiero info para empezar a entrenar">Empezar ahora</a>
@@ -37,57 +37,81 @@
 <section class="page-hero" style="padding-bottom:60px">
   <div class="wrap">
     <div class="head center">
-      <span class="badge in-1"><i></i>Mensuales · sin permanencia</span>
-      <h1 class="in-2">Elige cómo <span class="grad">empezar.</span></h1>
-      <p class="sub in-3">Tres formas de entrenar conmigo. Todas incluyen un plan hecho para ti y seguimiento real.</p>
+      <span class="badge in-1"><i></i>Planes y precios</span>
+      <h1 class="in-2">Elige el plan que más <span class="grad">te acomoda.</span></h1>
+      <p class="sub in-3">Planes mensuales, trimestrales y semestrales para entrenar 2 o 3 veces por semana. <span class="highlight">Cuanto más largo el plan, más económico cada mes.</span></p>
     </div>
 
+  <div class="pricing">
+    <div class="pick rev">
+      <div class="vfilter" data-pick="veces" role="group" aria-label="Veces por semana">
+        <button type="button" aria-pressed="true" data-v="2">2 veces por semana</button>
+        <button type="button" aria-pressed="false" data-v="3">3 veces por semana</button>
+      </div>
+      <div class="vfilter" data-pick="periodo" role="group" aria-label="Período de pago">
+        <button type="button" aria-pressed="true" data-v="mensual">Mensual</button>
+        <button type="button" aria-pressed="false" data-v="trimestral">Trimestral<em>-10%</em></button>
+        <button type="button" aria-pressed="false" data-v="semestral">Semestral<em>-15%</em></button>
+      </div>
+    </div>
     <div class="planes">
-      <article class="plan card rev">
+      <article class="plan card" data-plan="online">
+        
         <h3>Online</h3>
         <p class="d">Tu rutina y seguimiento, estés donde estés.</p>
-        <div class="pr"><b>$XX.XXX</b><span>/ mes</span></div>
+        <span class="ses" data-ses></span>
+        <div class="pr"><b data-precio></b><span>/ mes</span></div>
+        <span class="valor" data-valor></span>
+        <p class="total" data-total></p>
         <ul>
-          <li>Rutina adaptada a tu gimnasio o casa</li>
+          <li>Planificación según tu evaluación</li>
           <li>Corrección de técnica por video</li>
           <li>Pauta de alimentación flexible</li>
           <li>Ajustes cada 4 semanas</li>
         </ul>
-        <a class="btn btn-g btn-w" data-wa="Hola Pablo! Me interesa el plan Online">Quiero este plan</a>
+        <a class="btn btn-g btn-w" data-wa-plan>Quiero este plan</a>
       </article>
-      <article class="plan card hot rev">
+      <article class="plan card hot" data-plan="hibrido">
         <span class="flag">Más elegido</span>
         <h3>Híbrido</h3>
-        <p class="d">Sesiones presenciales + seguimiento online.</p>
-        <div class="pr"><b>$XX.XXX</b><span>/ mes</span></div>
+        <p class="d">Una sesión presencial por semana + el resto online.</p>
+        <span class="ses" data-ses></span>
+        <div class="pr"><b data-precio></b><span>/ mes</span></div>
+        <span class="valor" data-valor></span>
+        <p class="total" data-total></p>
         <ul>
           <li>Todo el plan Online, y además…</li>
-          <li>4 sesiones presenciales al mes</li>
+          <li>Sesiones presenciales para pulir técnica</li>
           <li>Evaluación física inicial</li>
           <li>WhatsApp directo conmigo</li>
         </ul>
-        <a class="btn btn-p btn-w" data-wa="Hola Pablo! Me interesa el plan Híbrido">Quiero este plan</a>
+        <a class="btn btn-p btn-w" data-wa-plan>Quiero este plan</a>
       </article>
-      <article class="plan card rev">
-        <h3>Personalizado</h3>
+      <article class="plan card" data-plan="presencial">
+        
+        <h3>Presencial 1:1</h3>
         <p class="d">Entrenamos juntos en cada sesión.</p>
-        <div class="pr"><b>$XX.XXX</b><span>/ mes</span></div>
+        <span class="ses" data-ses></span>
+        <div class="pr"><b data-precio></b><span>/ mes</span></div>
+        <span class="valor" data-valor></span>
+        <p class="total" data-total></p>
         <ul>
-          <li>12 sesiones presenciales al mes</li>
-          <li>Técnica corregida en tiempo real</li>
+          <li>Todas las sesiones conmigo</li>
+          <li>Técnica y cargas en tiempo real</li>
           <li>Plan de alimentación completo</li>
           <li>Control de progreso mensual</li>
         </ul>
-        <a class="btn btn-g btn-w" data-wa="Hola Pablo! Me interesa el plan Personalizado">Quiero este plan</a>
+        <a class="btn btn-g btn-w" data-wa-plan>Quiero este plan</a>
       </article>
     </div>
-    <p class="note rev">Pago por transferencia, coordinado por WhatsApp. Cupos limitados cada mes.</p>
+  </div>
+    <p class="note rev">Valores mensuales en pesos chilenos. Pago por transferencia, coordinado por WhatsApp. Cupos limitados.</p>
 
     <div class="assist card rev">
       <span class="np-av" aria-hidden="true">NP</span>
       <div>
         <h3>¿No sabes cuál elegir?</h3>
-        <p>Responde 8 preguntas (objetivo, lesiones, días disponibles) y te recomiendo el plan ideal.</p>
+        <p>Responde unas preguntas (objetivo, lesiones, días disponibles) y te recomiendo el plan ideal.</p>
       </div>
       <button class="btn btn-p" data-chat-open>Descubrir mi plan <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></button>
     </div>
@@ -101,10 +125,10 @@
       <h2 class="rev">Lo que me preguntan <span class="grad">antes de partir</span></h2>
     </div>
     <div class="faq card rev">
-      <details><summary>¿Necesito experiencia previa?<i></i></summary><p>No. Parto desde tu nivel actual y te enseño la técnica de cada ejercicio desde cero. Mucha gente llega sin haber pisado nunca un gimnasio.</p></details>
-      <details><summary>¿Puedo entrenar en casa?<i></i></summary><p>Sí. Con el plan online adapto la rutina al equipamiento que tengas, aunque sean unas mancuernas y una banda elástica.</p></details>
-      <details><summary>¿En cuánto tiempo veo resultados?<i></i></summary><p>Los primeros cambios en fuerza se notan en 3 a 4 semanas. Los cambios visibles, entre 8 y 12 semanas si eres constante con el entrenamiento y la alimentación.</p></details>
-      <details><summary>¿Qué pasa si falto algunos días?<i></i></summary><p>Ajustamos el plan y seguimos. Lo que importa es la constancia a largo plazo, no la perfección de una semana.</p></details>
+      <details><summary>¿Necesito experiencia previa?<i></i></summary><p>No. Cada planificación parte de una evaluación de tu condición física, experiencia y disponibilidad. Desde ahí avanzamos de forma segura.</p></details>
+      <details><summary>¿Qué diferencia hay entre 2 y 3 veces por semana?<i></i></summary><p>La cantidad de sesiones al mes: 8 o 12. Con 3 veces avanzas más rápido; con 2 es más fácil de sostener si tienes poco tiempo.</p></details>
+      <details><summary>¿Conviene pagar trimestral o semestral?<i></i></summary><p>Si vas a entrenar en serio, sí: el trimestral tiene 10% de descuento y el semestral 15% sobre el valor mensual.</p></details>
+      <details><summary>¿Puedo entrenar si tengo una lesión?<i></i></summary><p>Sí, adaptando los ejercicios. Si hay dolor que te limita o estás en tratamiento, partimos con el visto bueno de tu médico o kinesiólogo.</p></details>
       <details><summary>¿Cómo me corriges la técnica si es online?<i></i></summary><p>Me mandas videos de tus series por WhatsApp y te devuelvo correcciones concretas: postura, rango de movimiento y ritmo.</p></details>
       <details><summary>¿Cómo se paga?<i></i></summary><p>Por transferencia bancaria. Lo coordinamos por WhatsApp al momento de inscribirte.</p></details>
     </div>
@@ -114,7 +138,7 @@
 <section>
   <div class="wrap">
     <div class="cta-box rev">
-      <video src="assets/video/clip1.mp4" muted loop playsinline preload="none" data-auto aria-hidden="true"></video>
+      <video src="assets/video/cliente-remo.mp4" muted loop playsinline preload="none" data-auto aria-hidden="true"></video>
       <span class="badge" style="background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);color:#fff"><i></i>Cupos abiertos este mes</span>
       <h2 style="margin-top:22px">¿Te quedó alguna duda? <span style="opacity:.75">Pregúntame.</span></h2>
       <p>Respondo personalmente cada mensaje.</p>
@@ -133,14 +157,14 @@
     <div class="foot-grid">
       <div>
         <a href="index.html" class="logo"><b>NP</b>Negro Pablo</a>
-        <p>Entrenamiento personalizado presencial y online. Técnica, constancia y resultados que se notan.</p>
+        <p>Pablo Meza · Profesor de Estado de Educación Física (USACH), entrenador y preparador físico.</p>
       </div>
       <div>
         <h4>Sitio</h4>
         <ul>
           <li><a href="index.html">Inicio</a></li>
           <li><a href="sobre-mi.html">Sobre mí</a></li>
-          <li><a href="entrenamientos.html">Entrenamientos</a></li>
+          <li><a href="clientes.html">Clientes y entrenamiento</a></li>
         </ul>
       </div>
       <div>
@@ -161,8 +185,8 @@
       </div>
     </div>
     <div class="foot-bot">
-      <span>© <span data-year></span> Negro Pablo · Entrenador personal</span>
-      <span>Hecho con disciplina 💪</span>
+      <span>© <span data-year></span> Pablo Meza · Negro Pablo</span>
+      <span>No se trata de entrenar más. Se trata de entrenar mejor.</span>
     </div>
   </div>
 </footer>

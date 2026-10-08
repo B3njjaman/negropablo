@@ -9,6 +9,24 @@ const CONTACTO = {
   email: 'contacto@negropablo.cl',
 };
 
+// Precios mensuales en CLP según veces por semana. Cambia aquí y se actualiza
+// la página de planes y el asistente.
+const PRECIOS = {
+  online: { nombre: 'Online', 2: 59000, 3: 69000 },
+  hibrido: { nombre: 'Híbrido', 2: 99000, 3: 129000 },
+  presencial: { nombre: 'Presencial 1:1', 2: 190000, 3: 270000 },
+};
+// Descuento sobre el valor mensual al pagar el período completo.
+const PERIODOS = {
+  mensual: { nombre: 'mensual', meses: 1, descuento: 0 },
+  trimestral: { nombre: 'trimestral', meses: 3, descuento: 0.1 },
+  semestral: { nombre: 'semestral', meses: 6, descuento: 0.15 },
+};
+
+const clp = (n) => `$${(Math.round(n / 10) * 10).toLocaleString("es-CL")}`;
+const precioMes = (plan, veces, periodo = 'mensual') =>
+  PRECIOS[plan][veces] * (1 - PERIODOS[periodo].descuento);
+
 const waLink = (mensaje) =>
   `https://wa.me/${CONTACTO.whatsapp}?text=${encodeURIComponent(mensaje)}`;
 
@@ -110,7 +128,7 @@ if (lb) {
     lb.classList.remove('on');
     lbVideo.pause();
   };
-  document.querySelectorAll('.clip[data-src]').forEach((clip) =>
+  document.querySelectorAll('[data-src]').forEach((clip) =>
     clip.addEventListener('click', () => {
       lbVideo.src = clip.dataset.src;
       lb.classList.add('on');
@@ -122,16 +140,138 @@ if (lb) {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
 }
 
-// Filtros de la galería
-document.querySelectorAll('.chips[data-filter]').forEach((group) => {
-  const clips = document.querySelectorAll(group.dataset.filter);
-  group.querySelectorAll('.chip').forEach((chip) =>
-    chip.addEventListener('click', () => {
-      group.querySelectorAll('.chip').forEach((c) => c.classList.toggle('on', c === chip));
-      const cat = chip.dataset.cat;
-      clips.forEach((c) => c.classList.toggle('hide', cat !== 'todos' && c.dataset.cat !== cat));
+// Filtros del carrusel de videos
+document.querySelectorAll('.vfilter[data-row]').forEach((group) => {
+  const items = document.querySelectorAll(`${group.dataset.row} li`);
+  group.querySelectorAll('button').forEach((btn) =>
+    btn.addEventListener('click', () => {
+      group.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b === btn));
+      const cat = btn.dataset.cat;
+      items.forEach((li) => li.classList.toggle('hide', cat !== 'todos' && li.dataset.cat !== cat));
+      document.querySelector(group.dataset.row).scrollTo({ left: 0, behavior: 'smooth' });
     })
   );
+});
+
+// Planes: veces por semana × período de pago
+const detallePlan = (plan, veces) => {
+  const sesiones = veces * 4;
+  if (plan === 'online') return { ses: `${sesiones} entrenamientos al mes`, valor: 'Rutina + seguimiento online' };
+  if (plan === 'hibrido') return { ses: `4 presenciales + ${sesiones - 4} online`, valor: '1 sesión presencial por semana' };
+  return { ses: `${sesiones} sesiones 1:1 al mes`, valor: `Valor sesión ${clp(PRECIOS.presencial[veces] / sesiones)}` };
+};
+
+document.querySelectorAll('.pricing').forEach((root) => {
+  const estado = { veces: 2, periodo: 'mensual' };
+  const pintar = () => {
+    const { veces, periodo } = estado;
+    const p = PERIODOS[periodo];
+    root.querySelectorAll('[data-plan]').forEach((card) => {
+      const plan = card.dataset.plan;
+      const mes = precioMes(plan, veces, periodo);
+      const { ses, valor } = detallePlan(plan, veces);
+      card.querySelector('[data-precio]').textContent = clp(mes);
+      card.querySelector('[data-ses]').textContent = ses;
+      card.querySelector('[data-valor]').textContent = plan === 'presencial'
+        ? `Valor sesión ${clp(mes / (veces * 4))}`
+        : valor;
+      card.querySelector('[data-total]').innerHTML = p.meses === 1
+        ? 'Pago mes a mes'
+        : `Pagas ${clp(mes * p.meses)} por ${p.meses} meses · <b>ahorras ${clp((PRECIOS[plan][veces] - mes) * p.meses)}</b>`;
+      card.querySelector('[data-wa-plan]').href = waLink(
+        `Hola Pablo! Me interesa el plan ${PRECIOS[plan].nombre}, ${veces} veces por semana, pago ${p.nombre}.`
+      );
+    });
+  };
+  root.querySelectorAll('[data-pick]').forEach((group) =>
+    group.querySelectorAll('button').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b === btn));
+        const v = btn.dataset.v;
+        estado[group.dataset.pick] = group.dataset.pick === 'veces' ? Number(v) : v;
+        pintar();
+      })
+    )
+  );
+  root.querySelectorAll('[data-wa-plan]').forEach((a) => { a.target = '_blank'; a.rel = 'noopener'; });
+  pintar();
+});
+
+// Historias tipo Instagram: tocar a la derecha avanza, a la izquierda
+// retrocede y mantener presionado pausa.
+const ESPERA_PAUSA_MS = 220;
+document.querySelectorAll('.stories').forEach((root) => {
+  const slides = [...root.querySelectorAll('.st-slide')];
+  const bars = root.querySelector('.st-bars');
+  bars.innerHTML = slides.map(() => '<i><b></b></i>').join('');
+  const barEls = [...bars.children];
+  const chaps = [...document.querySelectorAll(`[data-stories="${root.id}"] .st-chap`)];
+  let actual = 0;
+  let visible = false;
+  let pausado = false;
+
+  const sincronizarVideos = () => slides.forEach((s, i) => {
+    const v = s.querySelector('video');
+    if (!v) return;
+    if (i === actual && visible && !pausado) v.play().catch(() => {});
+    else v.pause();
+  });
+
+  const mostrar = (n) => {
+    actual = (n + slides.length) % slides.length;
+    slides.forEach((s, i) => s.classList.toggle('on', i === actual));
+    barEls.forEach((bar, i) => {
+      bar.className = i < actual ? 'done' : '';
+      const fill = bar.firstChild.cloneNode();
+      bar.replaceChild(fill, bar.firstChild);
+      if (i === actual) {
+        bar.style.setProperty('--dur', `${slides[i].dataset.dur || 5000}ms`);
+        bar.className = 'on';
+        fill.addEventListener('animationend', () => mostrar(actual + 1), { once: true });
+      }
+    });
+    chaps.forEach((c, i) => c.setAttribute('aria-current', i === actual));
+    const v = slides[actual].querySelector('video');
+    if (v) v.currentTime = 0;
+    sincronizarVideos();
+  };
+
+  const pausar = (estado) => {
+    pausado = estado;
+    root.classList.toggle('paused', pausado || !visible);
+    sincronizarVideos();
+  };
+
+  let temporizador;
+  let mantenido = false;
+  root.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('a, button')) return;
+    mantenido = false;
+    temporizador = setTimeout(() => { mantenido = true; pausar(true); }, ESPERA_PAUSA_MS);
+  });
+  root.addEventListener('pointerup', (e) => {
+    if (e.target.closest('a, button')) return;
+    clearTimeout(temporizador);
+    root.classList.add('touched');
+    if (mantenido) { pausar(false); return; }
+    const { left, width } = root.getBoundingClientRect();
+    mostrar(e.clientX - left < width * 0.3 ? actual - 1 : actual + 1);
+  });
+  root.addEventListener('pointerleave', () => { clearTimeout(temporizador); if (mantenido) pausar(false); });
+  root.addEventListener('contextmenu', (e) => e.preventDefault());
+  root.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') mostrar(actual + 1);
+    if (e.key === 'ArrowLeft') mostrar(actual - 1);
+    if (e.key === ' ') { e.preventDefault(); pausar(!pausado); }
+  });
+  chaps.forEach((c, i) => c.addEventListener('click', () => { pausar(false); mostrar(i); }));
+
+  new IntersectionObserver(([e]) => {
+    visible = e.isIntersecting;
+    pausar(pausado);
+  }, { threshold: 0.4 }).observe(root);
+
+  mostrar(0);
 });
 
 // Formulario de contacto → mensaje de WhatsApp
