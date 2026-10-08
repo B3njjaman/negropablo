@@ -19,8 +19,8 @@ const PRECIOS = {
 // Descuento sobre el valor mensual al pagar el período completo.
 const PERIODOS = {
   mensual: { nombre: 'mensual', meses: 1, descuento: 0 },
-  trimestral: { nombre: 'trimestral', meses: 3, descuento: 0.1 },
-  semestral: { nombre: 'semestral', meses: 6, descuento: 0.15 },
+  trimestral: { nombre: 'trimestral', meses: 3, descuento: 0.05 },
+  semestral: { nombre: 'semestral', meses: 6, descuento: 0.1 },
 };
 
 const clp = (n) => `$${(Math.round(n / 10) * 10).toLocaleString("es-CL")}`;
