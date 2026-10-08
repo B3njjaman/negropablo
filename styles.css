@@ -163,7 +163,7 @@ section { padding: 110px 0; position: relative; }
 .fl-2 { bottom: 70px; right: 0; animation-delay: -2s; }
 .fl-3 { bottom: 20px; left: 20px; animation-delay: -4s; }
 .fl-ico { display: flex; align-items: center; gap: 12px; }
-.fl-ico span { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; font-size: 18px; background: rgba(255, 107, 53, .12); }
+.fl-ico span { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; color: var(--acento); flex: none; background: rgba(255, 107, 53, .12); }
 .bar { height: 6px; border-radius: 6px; background: rgba(255, 255, 255, .07); margin-top: 8px; overflow: hidden; width: 150px; }
 .bar i { display: block; height: 100%; width: 78%; border-radius: inherit; background: var(--grad-btn); }
 @keyframes bob { 50% { transform: translateY(-10px); } }
@@ -289,7 +289,7 @@ section { padding: 110px 0; position: relative; }
 .side { display: grid; gap: 16px; }
 .side .card { padding: 24px; display: flex; gap: 16px; align-items: center; transition: transform .3s var(--ease); }
 .side a.card:hover { transform: translateY(-3px); }
-.side .ico { width: 48px; height: 48px; border-radius: 15px; display: grid; place-items: center; font-size: 22px; background: rgba(255, 107, 53, .12); flex: none; }
+.side .ico { width: 48px; height: 48px; border-radius: 15px; display: grid; place-items: center; color: var(--acento); background: rgba(255, 107, 53, .12); flex: none; }
 .side small { display: block; color: var(--ink3); font-weight: 600; font-size: 13px; }
 .side strong { font-size: 16px; }
 
@@ -558,7 +558,7 @@ section { padding: 110px 0; position: relative; }
 .role { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--acento); text-transform: uppercase; }
 .goals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .goal { padding: 26px; }
-.goal span { font-size: 28px; display: block; margin-bottom: 12px; }
+.goal span { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; color: var(--acento); background: rgba(255, 107, 53, .12); margin-bottom: 12px; }
 .goal b { font-size: 17px; letter-spacing: -.02em; line-height: 1.3; display: block; }
 .big-quote { margin-top: 28px; padding: 44px; text-align: center; font-size: clamp(24px, 3.4vw, 40px); font-weight: 800; letter-spacing: -.035em; line-height: 1.15; }
 .career { display: grid; grid-template-columns: .85fr 1.15fr; gap: 48px; align-items: start; }
@@ -572,7 +572,7 @@ section { padding: 110px 0; position: relative; }
 .timeline span { font-size: 14.5px; color: var(--ink2); }
 .edu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .edu .card { padding: 28px; }
-.edu .ico { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 22px; background: rgba(255, 107, 53, .12); margin-bottom: 16px; }
+.edu .ico { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; color: var(--acento); background: rgba(255, 107, 53, .12); margin-bottom: 16px; }
 .edu b { display: block; font-size: 17.5px; letter-spacing: -.02em; line-height: 1.3; }
 .edu small { display: block; margin-top: 6px; color: var(--ink3); font-size: 14px; }
 
@@ -597,3 +597,8 @@ section { padding: 110px 0; position: relative; }
   .pick .vfilter button { flex: 1; padding: 0 10px; }
   .career-media { grid-template-columns: 1fr; }
 }
+
+/* Tama?os compartidos para los iconos decorativos inline. */
+.fl-ico span svg, .edu .ico svg, .side .ico svg { width: 20px; height: 20px; }
+.goal span svg { width: 28px; height: 28px; }
+.np-alert-icon { width: 18px; height: 18px; color: var(--amarillo); vertical-align: -3px; margin-right: 4px; }

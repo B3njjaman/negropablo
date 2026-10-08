@@ -3,6 +3,10 @@
    Asistente que detecta necesidades y recomienda un plan
    ═══════════════════════════════════════════════ */
 (() => {
+  const ICONOS = {
+    alerta: '<svg class="np-alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10.3 3.9-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3.1l-8-14a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4m0 4h.01"/></svg>',
+  };
+
   // Precios y nombres vienen de PRECIOS en main.js.
   const vecesPorSemana = (a) => (a.dias === '2' ? 2 : 3);
   const nombrePlan = (plan) => `Plan ${PRECIOS[plan].nombre}`;
@@ -36,10 +40,10 @@
     {
       id: 'inicio', type: 'choice',
       say: () => [
-        '¡Hola! 👋 Soy el asistente de Pablo.',
+        '¡Hola! Soy el asistente de Pablo.',
         'Te hago unas preguntas rápidas (menos de 1 minuto) para ver qué plan te sirve y si hay algo que cuidar, como lesiones o molestias.',
       ],
-      options: [{ v: 'ok', t: '¡Vamos! 💪' }],
+      options: [{ v: 'ok', t: '¡Vamos!' }],
     },
     {
       id: 'nombre', type: 'text', placeholder: 'Escribe tu nombre',
@@ -97,9 +101,9 @@
           ? `Por lo que me cuentas, así lo vamos a trabajar:<br><br>${zonas.map((z) => CONSEJOS[z]).join('<br><br>')}`
           : 'Anotado. Pablo va a revisar lo que me contaste para adaptar los ejercicios desde el primer día.'];
         if (esSeria(a)) {
-          out.push('⚠️ Como hay dolor que limita o estás en tratamiento, lo ideal es partir con el visto bueno de tu médico o kinesiólogo y que las primeras sesiones sean supervisadas.');
+          out.push(`${ICONOS.alerta} Como hay dolor que limita o estás en tratamiento, lo ideal es partir con el visto bueno de tu médico o kinesiólogo y que las primeras sesiones sean supervisadas.`);
         } else if (ALERTAS.test(a.detalle)) {
-          out.push('Por lo que describes, Pablo va a revisar tu caso en persona antes de definir cargas. 🙌');
+          out.push('Por lo que describes, Pablo va a revisar tu caso en persona antes de definir cargas.');
         }
         return out;
       },
