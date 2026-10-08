@@ -53,7 +53,12 @@ document.querySelectorAll('[data-year]').forEach((el) => {
 // Navegación: fondo al hacer scroll + menú móvil
 const nav = document.querySelector('.nav');
 const burger = document.querySelector('.burger');
-const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 10);
+const hayPortada = !!document.querySelector('.hero');
+const onScroll = () => {
+  nav.classList.toggle('scrolled', window.scrollY > 10);
+  // En la portada el botón del asistente se esconde: ya hay uno en el hero.
+  document.body.classList.toggle('en-portada', hayPortada && window.scrollY < 260);
+};
 onScroll();
 window.addEventListener('scroll', onScroll, { passive: true });
 burger?.addEventListener('click', () => {

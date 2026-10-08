@@ -346,7 +346,6 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <span class="badge in-1"><i></i>Profesor de Educación Física · USACH</span>
       <h1 class="in-2">Entrena con<br><span class="grad">propósito.</span><br>Avanza de verdad.</h1>
       <p class="sub in-3">Entrenamiento personalizado y preparación física con Pablo Meza, ex seleccionado nacional de handball. Para todas las edades, en el gimnasio, en tu casa o al aire libre.</p>
       <div class="ctas in-4">
@@ -362,6 +361,7 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
 
     <div class="stage in-3" aria-hidden="true">
       <div class="phone ph-back"><video src="assets/video/c-bulgara.mp4" poster="assets/img/c-bulgara.jpg" muted loop playsinline preload="none" data-auto></video></div>
+      <div class="phone ph-3"><video src="assets/video/c-domicilio.mp4" poster="assets/img/c-domicilio.jpg" muted loop playsinline preload="none" data-auto></video></div>
       <div class="phone ph-main"><video src="assets/video/c-curl-bayesiano.mp4" poster="assets/img/c-curl-bayesiano.jpg" muted loop playsinline autoplay preload="auto" data-auto></video></div>
       <div class="float fl-1">
         <div class="fl-ico"><span>{ICONOS["casa"]}</span><div><strong>Gimnasio o domicilio</strong>Tú eliges dónde</div></div>
