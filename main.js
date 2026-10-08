@@ -83,97 +83,94 @@ document.querySelectorAll('.rev').forEach((el, i) => {
   revealer.observe(el);
 });
 
-// Camino tipo Duolingo (GSAP + ScrollTrigger): la sección queda fija, el marcador
-// recorre la ruta, cada checkpoint se enciende con su frase y al final la meta
-// se abre como popup con Pablo. Sin GSAP o con movimiento reducido queda todo visible.
+// Camino tipo Duolingo (GSAP + ScrollTrigger), sin fijar la sección: la página
+// sigue bajando y la ruta se dibuja siguiéndote. El marcador "Tú" queda siempre a
+// la misma altura de la pantalla; cada checkpoint se enciende al alcanzarlo y al
+// final se abre la meta con Pablo. Sin GSAP o con movimiento reducido, todo visible.
 const animarCamino = () => {
   const camino = document.querySelector('.camino');
   if (!camino || !window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
+  // En iOS la barra de direcciones cambia el alto al hacer scroll: no recalcular por eso.
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
   const mapa = camino.querySelector('.camino-mapa');
   const ruta = camino.querySelector('.camino-trazo');
   const yo = camino.querySelector('.camino-yo');
   const nodos = [...camino.querySelectorAll('.camino-nodo')];
-  const burbujas = [...camino.querySelectorAll('.burbuja')];
+  const tarjetas = [...camino.querySelectorAll('.camino-card')];
   const meta = camino.querySelector('.camino-meta');
-  const popup = camino.querySelector('.popup-in');
-  const velo = camino.querySelector('.camino-velo');
+  const popup = camino.querySelector('.camino-popup');
   const fondo = camino.querySelector('.camino-fondo');
   const largo = ruta.getTotalLength();
 
-  // Fracción de la ruta donde cae cada checkpoint (coordenadas del viewBox 400×800).
-  const fraccionEn = (x, y) => {
-    let mejor = 0;
-    let distancia = Infinity;
-    for (let i = 0; i <= 400; i++) {
-      const p = ruta.getPointAtLength((largo * i) / 400);
-      const d = (p.x - x) ** 2 + (p.y - y) ** 2;
-      if (d < distancia) { distancia = d; mejor = i / 400; }
-    }
-    return mejor;
+  // La ruta siempre baja: tabla de altura (viewBox 400×800) → fracción recorrida.
+  const MUESTRAS = 500;
+  const alturas = Array.from({ length: MUESTRAS + 1 }, (_, i) => ruta.getPointAtLength((largo * i) / MUESTRAS).y);
+  const fraccionPorAltura = (y) => {
+    let i = 0;
+    while (i < MUESTRAS && alturas[i + 1] <= y) i++;
+    return i / MUESTRAS;
   };
-  const paradas = [...nodos, meta].map((n) => fraccionEn(Number(n.dataset.x), Number(n.dataset.y)));
+  const Y_INICIO = alturas[0];
+  const Y_FIN = alturas[MUESTRAS];
+  const paradas = [...nodos, meta].map((n) => fraccionPorAltura(Number(n.dataset.y)) - 0.004);
 
-  const avance = { f: 0 };
+  const tam = { w: 0, h: 0 };
+  const medir = () => { tam.w = mapa.clientWidth; tam.h = mapa.clientHeight; };
+  const moverYo = gsap.quickSetter(yo, 'css');
+  const avance = { y: Y_INICIO };
+
   const pintar = () => {
-    ruta.style.strokeDashoffset = String(1 - avance.f);
-    const p = ruta.getPointAtLength(largo * avance.f);
-    gsap.set(yo, { x: (p.x / 400) * mapa.clientWidth, y: (p.y / 800) * mapa.clientHeight, xPercent: -50, yPercent: -50 });
+    const f = fraccionPorAltura(avance.y);
+    ruta.style.strokeDashoffset = String(1 - f);
+    const p = ruta.getPointAtLength(largo * f);
+    moverYo({ x: (p.x / 400) * tam.w, y: (p.y / 800) * tam.h });
+    nodos.forEach((nodo, i) => {
+      const listo = f >= paradas[i];
+      nodo.classList.toggle('on', listo);
+      tarjetas[i].classList.toggle('on', listo);
+    });
+    const llego = f >= paradas[paradas.length - 1];
+    meta.classList.toggle('on', llego);
+    popup.classList.toggle('on', llego);
   };
 
   const medios = gsap.matchMedia();
-  medios.add({ animar: '(prefers-reduced-motion: no-preference)', movil: '(max-width: 640px)' }, ({ conditions }) => {
+  medios.add({ animar: '(prefers-reduced-motion: no-preference)' }, ({ conditions }) => {
     if (!conditions.animar) return undefined;
     camino.classList.add('camino-anim');
-    avance.f = 0;
-
-    gsap.set(burbujas, { autoAlpha: 0, y: 18, scale: 0.94 });
-    nodos.forEach((nodo) => {
-      gsap.set(nodo.querySelector('.fill'), { opacity: 0 });
-      gsap.set(nodo.querySelector('.ok'), { opacity: 0, scale: 0.4 });
-    });
-    gsap.set(meta, { opacity: 0.55, filter: 'grayscale(.75)' });
-    gsap.set(velo, { autoAlpha: 0 });
-    gsap.set(popup, { autoAlpha: 0, scale: 0.82, y: 40 });
+    medir();
+    gsap.set(yo, { xPercent: -50, yPercent: -50 });
+    avance.y = Y_INICIO;
     pintar();
 
-    const tl = gsap.timeline({
-      defaults: { ease: 'power2.out' },
+    // El marcador avanza a la misma velocidad que el scroll, a ~55% del alto de pantalla.
+    const LINEA = '55%';
+    gsap.to(avance, {
+      y: Y_FIN,
+      ease: 'none',
+      onUpdate: pintar,
       scrollTrigger: {
-        trigger: camino, start: 'top top', end: conditions.movil ? '+=300%' : '+=340%', pin: true, scrub: 0.8,
-        onRefresh: pintar,
+        trigger: mapa,
+        start: () => `top+=${(Y_INICIO / 800) * mapa.clientHeight} ${LINEA}`,
+        end: () => `top+=${(Y_FIN / 800) * mapa.clientHeight} ${LINEA}`,
+        scrub: 0.5,
+        invalidateOnRefresh: true,
+        onRefresh: () => { medir(); pintar(); },
       },
     });
 
-    let desde = 0;
-    nodos.forEach((nodo, i) => {
-      const bola = nodo.querySelector('.bola');
-      if (i > 0) tl.to(burbujas[i - 1], { autoAlpha: 0.35, scale: 0.97, duration: 0.3 });
-      tl.to(avance, { f: paradas[i], duration: (paradas[i] - desde) * 5, ease: 'none', onUpdate: pintar }, i > 0 ? '<' : '>')
-        .to(bola, { scale: 1.22, duration: 0.2 })
-        .to(nodo.querySelector('.fill'), { opacity: 1, duration: 0.2 }, '<')
-        .to(nodo.querySelector('.n'), { opacity: 0, duration: 0.15 }, '<')
-        .to(nodo.querySelector('.ok'), { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(3)' }, '<0.05')
-        .to(bola, { scale: 1, duration: 0.35, ease: 'back.out(3)' })
-        .to(burbujas[i], { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: 'back.out(1.7)' }, '<')
-        .to({}, { duration: 0.6 });
-      desde = paradas[i];
+    // La foto de fondo baja más lento que la página (parallax).
+    gsap.fromTo(fondo, { yPercent: -8 }, {
+      yPercent: 8, ease: 'none',
+      scrollTrigger: { trigger: camino, start: 'top bottom', end: 'bottom top', scrub: true },
     });
-
-    tl.to(burbujas[burbujas.length - 1], { autoAlpha: 0.35, scale: 0.97, duration: 0.3 })
-      .to(avance, { f: 1, duration: (1 - desde) * 5, ease: 'none', onUpdate: pintar }, '<')
-      .to(meta, { opacity: 1, filter: 'grayscale(0)', scale: 1.18, duration: 0.4 }, '-=0.2')
-      .to(velo, { autoAlpha: 1, duration: 0.35 })
-      .to(popup, { autoAlpha: 1, scale: 1, y: 0, duration: 0.6, ease: 'back.out(1.6)' }, '<')
-      .to({}, { duration: 0.9 });
-
-    // La meta de fondo baja suave con el scroll (parallax).
-    tl.fromTo(fondo, { yPercent: -5, scale: 1.06 }, { yPercent: 5, scale: 1.12, ease: 'none', duration: tl.duration() }, 0);
 
     return () => {
       camino.classList.remove('camino-anim');
       ruta.style.strokeDashoffset = '';
+      [...nodos, ...tarjetas, meta, popup].forEach((el) => el.classList.remove('on'));
     };
   });
 };

@@ -57,7 +57,7 @@ def head(title, desc, og="assets/img/pablo-handball-salto.jpg"):
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop offset='0' stop-color='%23e63946'/><stop offset='1' stop-color='%23ff6b35'/></linearGradient></defs><rect width='64' height='64' rx='18' fill='url(%23g)'/><text x='32' y='42' font-family='Arial' font-weight='800' font-size='26' fill='white' text-anchor='middle'>NP</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v={VER}">
 </head>
 <body>
@@ -190,7 +190,7 @@ HISTORIAS = [
 def historias(sid):
     slides = []
     for h in HISTORIAS:
-        media = (f'<video src="assets/video/{h["src"]}.mp4" poster="assets/img/{h["src"]}.jpg" muted loop playsinline preload="metadata" aria-label="{h["titulo"]}"></video>'
+        media = (f'<video src="assets/video/{h["src"]}.mp4" poster="assets/img/{h["src"]}.jpg" muted loop playsinline preload="none" aria-label="{h["titulo"]}"></video>'
                  if h["tipo"] == "video" else
                  f'<img src="assets/img/{h["src"]}.jpg" alt="Pablo Meza jugando handball" loading="lazy">')
         boton = (f'<a class="btn btn-p btn-s" data-wa="Hola Pablo! Vi tu página y quiero entrenar contigo">Escribirle a Pablo {ARROW}</a>'
@@ -358,7 +358,7 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
     <div class="stage in-3" aria-hidden="true">
       <div class="phone ph-back"><video src="assets/video/c-bulgara.mp4" poster="assets/img/c-bulgara.jpg" muted loop playsinline preload="none" data-auto></video></div>
       <div class="phone ph-3"><video src="assets/video/c-domicilio.mp4" poster="assets/img/c-domicilio.jpg" muted loop playsinline preload="none" data-auto></video></div>
-      <div class="phone ph-main"><video src="assets/video/cliente-dominadas.mp4" poster="assets/img/cliente-dominadas.jpg" muted loop playsinline autoplay preload="auto" data-auto></video></div>
+      <div class="phone ph-main"><video src="assets/video/cliente-dominadas.mp4" poster="assets/img/cliente-dominadas.jpg" muted loop playsinline autoplay preload="metadata" data-auto></video></div>
       <div class="float fl-1">
         <div class="fl-ico"><span>{ICONOS["casa"]}</span><div><strong>Gimnasio o domicilio</strong>Tú eliges dónde</div></div>
       </div>
@@ -391,22 +391,20 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
     </div>
     <div class="camino-mapa">
       <svg class="camino-svg" viewBox="0 0 400 800" preserveAspectRatio="none" aria-hidden="true">
-        <defs><linearGradient id="caminoGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e63946"/><stop offset=".55" stop-color="#ff6b35"/><stop offset="1" stop-color="#ffd23f"/></linearGradient></defs>
-        <path class="camino-base" d="M200 770 C 200 700, 110 690, 110 600 C 110 510, 290 520, 290 430 C 290 340, 110 350, 110 260 C 110 180, 200 175, 200 95"/>
-        <path class="camino-trazo" d="M200 770 C 200 700, 110 690, 110 600 C 110 510, 290 520, 290 430 C 290 340, 110 350, 110 260 C 110 180, 200 175, 200 95" pathLength="1"/>
+        <defs><linearGradient id="caminoGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e63946"/><stop offset=".55" stop-color="#ff6b35"/><stop offset="1" stop-color="#ffd23f"/></linearGradient></defs>
+        <path class="camino-base" d="M110 60 C 110 180, 290 180, 290 300 C 290 420, 110 420, 110 540 C 110 640, 200 640, 200 740"/>
+        <path class="camino-trazo" d="M110 60 C 110 180, 290 180, 290 300 C 290 420, 110 420, 110 540 C 110 640, 200 640, 200 740" pathLength="1"/>
       </svg>
-      <div class="camino-inicio" style="left:50%;top:96.25%"><span>Hoy</span></div>
-      <div class="camino-nodo" data-x="110" data-y="600" style="left:27.5%;top:75.0%"><span class="bola"><i class="fill"></i><span class="n">01</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
-      <div class="camino-card der" style="top:75.0%"><div class="burbuja"><small>01 · Evaluación</small><b>Primero, te evalúo.</b><span>Tus objetivos, condición física, experiencia y disponibilidad.</span></div></div>
-      <div class="camino-nodo" data-x="290" data-y="430" style="left:72.5%;top:53.75%"><span class="bola"><i class="fill"></i><span class="n">02</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
-      <div class="camino-card izq" style="top:53.75%"><div class="burbuja"><small>02 · Plan</small><b>Después, diseño tu plan.</b><span>Entrenamientos progresivos y personalizados, pensados para ti.</span></div></div>
-      <div class="camino-nodo" data-x="110" data-y="260" style="left:27.5%;top:32.5%"><span class="bola"><i class="fill"></i><span class="n">03</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
-      <div class="camino-card der" style="top:32.5%"><div class="burbuja"><small>03 · Progreso</small><b>Semana a semana, progresas.</b><span>Revisamos técnica y avance, y ajustamos para que sigas progresando.</span></div></div>
-      <div class="camino-meta" data-x="200" data-y="95" style="left:50%;top:11.875%"><span class="aro"><img src="assets/img/pablo-handball-salto.jpg" alt="" loading="lazy"></span><span class="etq">Meta</span></div>
+      <div class="camino-nodo" data-x="110" data-y="60" style="left:27.5%;top:7.5%"><span class="bola"><i class="fill"></i><span class="n">01</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
+      <div class="camino-card der" style="top:7.5%"><div class="burbuja"><small>01 · Evaluación</small><b>Primero, te evalúo.</b><span>Tus objetivos, condición física, experiencia y disponibilidad.</span></div></div>
+      <div class="camino-nodo" data-x="290" data-y="300" style="left:72.5%;top:37.5%"><span class="bola"><i class="fill"></i><span class="n">02</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
+      <div class="camino-card izq" style="top:37.5%"><div class="burbuja"><small>02 · Plan</small><b>Después, diseño tu plan.</b><span>Entrenamientos progresivos y personalizados, pensados para ti.</span></div></div>
+      <div class="camino-nodo" data-x="110" data-y="540" style="left:27.5%;top:67.5%"><span class="bola"><i class="fill"></i><span class="n">03</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
+      <div class="camino-card der" style="top:67.5%"><div class="burbuja"><small>03 · Progreso</small><b>Semana a semana, progresas.</b><span>Revisamos técnica y avance, y ajustamos para que sigas progresando.</span></div></div>
+      <div class="camino-meta" data-x="200" data-y="740" style="left:50%;top:92.5%"><span class="etq">Meta</span><span class="aro"><img src="assets/img/pablo-handball-salto.jpg" alt="" loading="lazy"></span></div>
       <div class="camino-yo" aria-hidden="true"><span>Tú</span></div>
     </div>
   </div>
-  <div class="camino-velo" aria-hidden="true"></div>
   <div class="camino-popup">
     <div class="popup-in">
       <img src="assets/img/pablo-handball-salto.jpg" alt="Pablo Meza jugando handball">
