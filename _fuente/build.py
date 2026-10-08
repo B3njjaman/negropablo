@@ -55,13 +55,13 @@ def head(title, desc, og="assets/img/og-pablocoach.jpg"):
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://b3njjaman.github.io/negropablo/">
-  <meta property="og:image" content="https://b3njjaman.github.io/negropablo/{og}">
+  <meta property="og:url" content="https://b3njjaman.github.io/pablocoach/">
+  <meta property="og:image" content="https://b3njjaman.github.io/pablocoach/{og}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="PabloCoach · Personal Trainer">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://b3njjaman.github.io/negropablo/{og}">
+  <meta name="twitter:image" content="https://b3njjaman.github.io/pablocoach/{og}">
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
