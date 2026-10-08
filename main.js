@@ -287,9 +287,9 @@ document.querySelectorAll('.pricing').forEach((root) => {
   pintar();
 });
 
-// Historias tipo Instagram: tocar a la derecha avanza, a la izquierda
-// retrocede y mantener presionado pausa.
-const ESPERA_PAUSA_MS = 220;
+// Historias tipo Instagram: tocar a la derecha avanza y a la izquierda retrocede.
+// Sin pausa: el video corre apenas la sección aparece en pantalla, y se precarga
+// un poco antes de llegar para que parta al instante.
 document.querySelectorAll('.stories').forEach((root) => {
   const slides = [...root.querySelectorAll('.st-slide')];
   const bars = root.querySelector('.st-bars');
@@ -298,12 +298,17 @@ document.querySelectorAll('.stories').forEach((root) => {
   const chaps = [...document.querySelectorAll(`[data-stories="${root.id}"] .st-chap`)];
   let actual = 0;
   let visible = false;
-  let pausado = false;
+
+  const videoDe = (i) => slides[(i + slides.length) % slides.length].querySelector('video');
+  const precargar = (i) => {
+    const v = videoDe(i);
+    if (v && v.preload !== 'auto') { v.preload = 'auto'; v.load(); }
+  };
 
   const sincronizarVideos = () => slides.forEach((s, i) => {
     const v = s.querySelector('video');
     if (!v) return;
-    if (i === actual && visible && !pausado) v.play().catch(() => {});
+    if (i === actual && visible) v.play().catch(() => {});
     else v.pause();
   });
 
@@ -321,46 +326,38 @@ document.querySelectorAll('.stories').forEach((root) => {
       }
     });
     chaps.forEach((c, i) => c.setAttribute('aria-current', i === actual));
-    const v = slides[actual].querySelector('video');
+    const v = videoDe(actual);
     if (v) v.currentTime = 0;
+    precargar(actual + 1);
     sincronizarVideos();
   };
 
-  const pausar = (estado) => {
-    pausado = estado;
-    root.classList.toggle('paused', pausado || !visible);
-    sincronizarVideos();
-  };
-
-  let temporizador;
-  let mantenido = false;
-  root.addEventListener('pointerdown', (e) => {
+  root.addEventListener('click', (e) => {
     if (e.target.closest('a, button')) return;
-    mantenido = false;
-    temporizador = setTimeout(() => { mantenido = true; pausar(true); }, ESPERA_PAUSA_MS);
-  });
-  root.addEventListener('pointerup', (e) => {
-    if (e.target.closest('a, button')) return;
-    clearTimeout(temporizador);
     root.classList.add('touched');
-    if (mantenido) { pausar(false); return; }
     const { left, width } = root.getBoundingClientRect();
     mostrar(e.clientX - left < width * 0.3 ? actual - 1 : actual + 1);
   });
-  root.addEventListener('pointerleave', () => { clearTimeout(temporizador); if (mantenido) pausar(false); });
   root.addEventListener('contextmenu', (e) => e.preventDefault());
   root.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') mostrar(actual + 1);
     if (e.key === 'ArrowLeft') mostrar(actual - 1);
-    if (e.key === ' ') { e.preventDefault(); pausar(!pausado); }
   });
-  chaps.forEach((c, i) => c.addEventListener('click', () => { pausar(false); mostrar(i); }));
+  chaps.forEach((c, i) => c.addEventListener('click', () => mostrar(i)));
 
+  // Precarga cuando la sección está a ~600px de entrar.
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) { precargar(actual); precargar(actual + 1); }
+  }, { rootMargin: '600px 0px' }).observe(root);
+
+  // Corre apenas asoma en pantalla; la barra de progreso solo avanza mientras se ve.
   new IntersectionObserver(([e]) => {
     visible = e.isIntersecting;
-    pausar(pausado);
-  }, { threshold: 0.4 }).observe(root);
+    root.classList.toggle('paused', !visible);
+    sincronizarVideos();
+  }, { threshold: 0.15 }).observe(root);
 
+  root.classList.add('paused');
   mostrar(0);
 });
 

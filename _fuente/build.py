@@ -417,7 +417,7 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
     </div>
   </div>
 </section>
-{bloque_historias("historias-inicio", "Clientes y entrenamiento", 'Así se entrena <span class="grad">con Pablo.</span>', "Míralo como historias de Instagram: toca a la derecha para avanzar y mantén presionado para pausar.", f'<a class="btn btn-g rev" href="clientes.html" style="margin-top:24px">Ver todos los videos {ARROW}</a>')}
+{bloque_historias("historias-inicio", "Clientes y entrenamiento", 'Así se entrena <span class="grad">con Pablo.</span>', "Míralo como historias de Instagram: toca a la derecha para avanzar.", f'<a class="btn btn-g rev" href="clientes.html" style="margin-top:24px">Ver todos los videos {ARROW}</a>')}
 <section style="padding-top:20px">
   <div class="wrap">
     <div class="bento">
@@ -568,7 +568,7 @@ SOBRE = head("Sobre mí · Pablo Meza", "Pablo Nicolás Meza Espinosa: Profesor 
 # ═════════════════════════ CLIENTES Y ENTRENAMIENTO ═════════════════════════
 CLIENTES = head("Clientes y entrenamiento · Negro Pablo", "Así entrenan los clientes de Pablo Meza: en el gimnasio, a domicilio y adultos mayores, con evaluación y técnica guiada.", "assets/img/c-bulgara.jpg") + nav("clientes.html") + f'''
 <main>
-{bloque_historias("historias-clientes", "Clientes y entrenamiento", 'Así se entrena, <span class="grad">por dentro.</span>', "Jóvenes, adultos y adultos mayores, en el gimnasio o a domicilio. Toca a la derecha para avanzar y mantén presionado para pausar.")}
+{bloque_historias("historias-clientes", "Clientes y entrenamiento", 'Así se entrena, <span class="grad">por dentro.</span>', "Jóvenes, adultos y adultos mayores, en el gimnasio o a domicilio. Toca a la derecha para avanzar.")}
 {carrusel("videos", "clientes", "Mis clientes", 'Clientes reales, <span class="grad">de todas las edades.</span>', "En el gimnasio, en casa o al aire libre. Toca un video para verlo en grande.")}
 {cta('¿Quieres entrenar <span style="opacity:.75">así?</span>', 'Evaluación, técnica guiada y un plan que progresa contigo.', "cliente-dominadas")}
 </main>
