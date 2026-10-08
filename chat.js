@@ -20,6 +20,18 @@
     condicion: 'Condición médica: ajustamos intensidad y descansos según lo que indique tu médico.',
   };
 
+  const ZONAS = {
+    rodilla: /rodill|menisco|r[oó]tula|cruzado|lca/i,
+    lumbar: /lumbar|espalda|ci[aá]tic|hernia|columna|disco/i,
+    hombro: /hombro|manguito|clav[ií]cula|esc[aá]pula/i,
+    codo: /codo|mu[ñn]eca|epicondil|carpiano|mano/i,
+    cadera: /cadera|ingle|gl[uú]teo|pubalgia/i,
+    tobillo: /tobillo|esguince|pie|aquiles|plantar|talón|talon/i,
+    cuello: /cuello|cervical/i,
+    condicion: /asma|presi[oó]n|hipertens|diabet|coraz[oó]n|card[ií]a|embaraz|epilep|tiroid/i,
+  };
+  const detectarZonas = (texto = '') => Object.keys(ZONAS).filter((z) => ZONAS[z].test(texto));
+
   const ALERTAS = /operad|operaci|cirug|fractur|embaraz|card[ií]a|coraz[oó]n|hernia|presi[oó]n|desmay|ligamento|menisco|tendinitis/i;
 
   const STEPS = [
@@ -65,22 +77,16 @@
       ],
     },
     {
-      id: 'zonas', type: 'multi', skip: (a) => a.lesion !== 'si',
-      say: () => ['Gracias por contarme, es clave para armar bien tu plan. ¿Dónde es? Puedes marcar varias.'],
-      options: [
-        { v: 'rodilla', t: 'Rodilla' },
-        { v: 'lumbar', t: 'Espalda baja' },
-        { v: 'hombro', t: 'Hombro' },
-        { v: 'codo', t: 'Codo o muñeca' },
-        { v: 'cadera', t: 'Cadera' },
-        { v: 'tobillo', t: 'Tobillo' },
-        { v: 'cuello', t: 'Cuello' },
-        { v: 'condicion', t: 'Condición médica (asma, presión, etc.)' },
+      id: 'detalle', type: 'text', skip: (a) => a.lesion !== 'si',
+      placeholder: 'Ej: me duele la rodilla al bajar escaleras',
+      say: () => [
+        'Gracias por contarme, es clave para armar bien tu plan.',
+        'Cuéntame con tus palabras: ¿dónde es, qué te pasó y hace cuánto?',
       ],
     },
     {
       id: 'estado', type: 'choice', skip: (a) => a.lesion !== 'si',
-      say: () => ['¿Cómo está hoy?'],
+      say: () => ['¿Y cómo está hoy?'],
       options: [
         { v: 'recuperada', t: 'Ya está recuperada' },
         { v: 'leve', t: 'Molestia leve' },
@@ -88,20 +94,17 @@
         { v: 'tratamiento', t: 'En tratamiento o recién operado' },
       ],
       after: (a) => {
-        const out = [a.zonas.map((z) => CONSEJOS[z]).join('<br><br>')];
+        const zonas = detectarZonas(a.detalle);
+        const out = [zonas.length
+          ? `Por lo que me cuentas, así lo vamos a trabajar:<br><br>${zonas.map((z) => CONSEJOS[z]).join('<br><br>')}`
+          : 'Anotado. Pablo va a revisar lo que me contaste para adaptar los ejercicios desde el primer día.'];
         if (esSeria(a)) {
           out.push('⚠️ Como hay dolor que limita o estás en tratamiento, lo ideal es partir con el visto bueno de tu médico o kinesiólogo y que las primeras sesiones sean supervisadas.');
+        } else if (ALERTAS.test(a.detalle)) {
+          out.push('Por lo que describes, Pablo va a revisar tu caso en persona antes de definir cargas. 🙌');
         }
         return out;
       },
-    },
-    {
-      id: 'detalle', type: 'text', optional: true, skip: (a) => a.lesion !== 'si',
-      placeholder: 'Ej: me operé del menisco hace 6 meses',
-      say: () => ['Si quieres, cuéntame un poco más (qué pasó, hace cuánto, qué te duele). Si no, puedes omitirlo.'],
-      after: (a) => (ALERTAS.test(a.detalle || '')
-        ? ['Anotado. Por lo que me cuentas, Pablo va a revisar tu caso en persona antes de definir cargas. 🙌']
-        : []),
     },
     {
       id: 'dias', type: 'choice',
@@ -204,7 +207,7 @@
       `• Objetivo: ${L('objetivo')}`,
       `• Experiencia: ${L('experiencia')}`,
       a.lesion === 'si'
-        ? `• Lesión: ${L('zonas')} (${L('estado')})${a.detalle ? ` — ${a.detalle}` : ''}`
+        ? `• Lesión: "${a.detalle}" (${L('estado')})`
         : '• Lesiones: ninguna',
       `• Días: ${L('dias')} · Lugar: ${L('lugar')}`,
       `• Modalidad: ${L('modalidad')}`,
@@ -217,7 +220,7 @@
   // ── Utilidades ──
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const wa = (msg) => (typeof waLink === 'function' ? waLink(msg) : '#');
-  const KEY = 'np-chat-v1';
+  const KEY = 'np-chat-v2';
   const load = () => { try { return JSON.parse(sessionStorage.getItem(KEY)) || {}; } catch { return {}; } };
   const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(A)); } catch { /* sin almacenamiento */ } };
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -241,7 +244,7 @@
       </header>
       <div class="np-log" aria-live="polite"></div>
       <form class="np-input" autocomplete="off">
-        <input type="text" maxlength="300" placeholder="Elige una opción" disabled aria-label="Tu respuesta">
+        <input type="text" maxlength="500" placeholder="Elige una opción" disabled aria-label="Tu respuesta">
         <button type="submit" disabled aria-label="Enviar">${SEND}</button>
       </form>
     </section>`);
@@ -337,7 +340,7 @@
     const plan = recomendar(a);
     const p = PLANES[plan];
     const lesion = a.lesion === 'si'
-      ? `<div class="np-box${esSeria(a) ? ' np-warn' : ''}"><b>Tu lesión</b>${esc(etiqueta(paso("zonas"), a.zonas))} · ${esc(etiqueta(paso("estado"), a.estado))}. ${esSeria(a) ? 'Trae el visto bueno de tu médico o kine para la primera sesión.' : 'La adaptamos desde el día uno.'}</div>`
+      ? `<div class="np-box${esSeria(a) ? ' np-warn' : ''}"><b>Tu lesión</b>“${esc(a.detalle)}” · ${esc(etiqueta(paso('estado'), a.estado))}. ${esSeria(a) ? 'Trae el visto bueno de tu médico o kine para la primera sesión.' : 'La adaptamos desde el día uno.'}</div>`
       : '';
     return `
       <div class="np-result">
