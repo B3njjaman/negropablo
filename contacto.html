@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contacto · Negro Pablo</title>
+  <meta name="description" content="Escríbele a Pablo y arma tu plan de entrenamiento.">
+  <meta name="theme-color" content="#F6F7FD">
+  <meta property="og:title" content="Contacto · Negro Pablo">
+  <meta property="og:description" content="Escríbele a Pablo y arma tu plan de entrenamiento.">
+  <meta property="og:image" content="assets/img/pablo.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop offset='0' stop-color='%232F5BFF'/><stop offset='1' stop-color='%239A4DFF'/></linearGradient></defs><rect width='64' height='64' rx='18' fill='url(%23g)'/><text x='32' y='42' font-family='Arial' font-weight='800' font-size='26' fill='white' text-anchor='middle'>NP</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+<header class="nav">
+  <div class="wrap">
+    <div class="nav-in">
+      <a href="index.html" class="logo"><b>NP</b>Negro Pablo</a>
+      <nav class="nav-d" aria-label="Principal">
+        <a href="sobre-mi.html">Sobre mí</a>
+        <a href="entrenamientos.html">Entrenamientos</a>
+        <a href="planes.html">Planes</a>
+        <a href="contacto.html" class="on" aria-current="page">Contacto</a>
+        <a class="btn btn-p btn-s" data-wa="Hola Pablo! Quiero info para empezar a entrenar">Empezar ahora</a>
+      </nav>
+      <button class="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="page-hero">
+  <div class="wrap">
+    <div class="head">
+      <span class="badge in-1"><i></i>Respondo en menos de 24 h</span>
+      <h1 class="in-2">Hablemos de <span class="grad">tu objetivo.</span></h1>
+      <p class="sub in-3">Completa esto y se abre WhatsApp con tu mensaje listo para enviar.</p>
+    </div>
+    <div class="contact">
+      <form class="form card in-4" id="contactForm">
+        <div class="row">
+          <div class="field"><label for="nombre">Tu nombre</label><input id="nombre" name="nombre" required placeholder="Ej: Camila" autocomplete="given-name"></div>
+          <div class="field">
+            <label for="objetivo">Tu objetivo</label>
+            <select id="objetivo" name="objetivo">
+              <option>Ganar masa muscular</option>
+              <option>Bajar grasa</option>
+              <option>Ganar fuerza</option>
+              <option>Aprender a entrenar</option>
+              <option>Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Cómo quieres entrenar?</label>
+          <div class="seg">
+            <label><input type="radio" name="modalidad" value="Online" checked><span>Online</span></label>
+            <label><input type="radio" name="modalidad" value="Híbrido"><span>Híbrido</span></label>
+            <label><input type="radio" name="modalidad" value="Personalizado presencial"><span>Presencial</span></label>
+            <label><input type="radio" name="modalidad" value="Aún no sé"><span>Aún no sé</span></label>
+          </div>
+        </div>
+        <div class="field"><label for="mensaje">Cuéntame más <span style="color:var(--ink3);font-weight:500">(opcional)</span></label><textarea id="mensaje" name="mensaje" placeholder="Experiencia, lesiones, días disponibles…"></textarea></div>
+        <button class="btn btn-p" type="submit"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3C9 3 3.3 8.6 3.3 15.6c0 2.4.7 4.7 1.9 6.7L3 29l6.9-2.2c1.9 1 4 1.6 6.1 1.6 7 0 12.7-5.6 12.7-12.6S23 3 16 3zm0 23.1c-2 0-3.9-.5-5.6-1.6l-.4-.2-4.1 1.3 1.3-4-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5.1 9.9 10 5.2 16 5.2s10.9 4.8 10.9 10.6S22 26.1 16 26.1zm6-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1c-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.7s1.2 3.2 1.4 3.4c.2.2 2.4 3.6 5.7 5 .8.3 1.4.5 1.9.7.8.3 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg> Enviar por WhatsApp</button>
+      </form>
+      <div class="side">
+        <a class="card in-4" data-wa="Hola Pablo!"><span class="ico">💬</span><div><small>WhatsApp</small><strong>Escríbeme directo</strong></div></a>
+        <a class="card in-5" data-ig><span class="ico">📸</span><div><small>Instagram</small><strong data-ig data-ig-text>@negropablo</strong></div></a>
+        <a class="card in-5" data-mail><span class="ico">✉️</span><div><small>Email</small><strong data-mail data-mail-text>contacto@negropablo.cl</strong></div></a>
+        <div class="card in-5"><span class="ico">📍</span><div><small>Ubicación</small><strong>Chile · online a todo el mundo</strong></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="index.html" class="logo"><b>NP</b>Negro Pablo</a>
+        <p>Entrenamiento personalizado presencial y online. Técnica, constancia y resultados que se notan.</p>
+      </div>
+      <div>
+        <h4>Sitio</h4>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="sobre-mi.html">Sobre mí</a></li>
+          <li><a href="entrenamientos.html">Entrenamientos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Planes</h4>
+        <ul>
+          <li><a href="planes.html">Precios</a></li>
+          <li><a href="planes.html#preguntas">Preguntas</a></li>
+          <li><a href="contacto.html">Agenda tu inicio</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li><a data-wa="Hola Pablo!">WhatsApp</a></li>
+          <li><a data-ig>Instagram</a></li>
+          <li><a data-mail>Email</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© <span data-year></span> Negro Pablo · Entrenador personal</span>
+      <span>Hecho con disciplina 💪</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa" data-wa="Hola Pablo! Quiero info sobre tus planes" aria-label="Escribir por WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3C9 3 3.3 8.6 3.3 15.6c0 2.4.7 4.7 1.9 6.7L3 29l6.9-2.2c1.9 1 4 1.6 6.1 1.6 7 0 12.7-5.6 12.7-12.6S23 3 16 3zm0 23.1c-2 0-3.9-.5-5.6-1.6l-.4-.2-4.1 1.3 1.3-4-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5.1 9.9 10 5.2 16 5.2s10.9 4.8 10.9 10.6S22 26.1 16 26.1zm6-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1c-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.7s1.2 3.2 1.4 3.4c.2.2 2.4 3.6 5.7 5 .8.3 1.4.5 1.9.7.8.3 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg><span>¿Hablamos?</span></a>
+
+<div class="lb" role="dialog" aria-label="Video">
+  <button class="lb-x" aria-label="Cerrar">✕</button>
+  <video controls playsinline></video>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
