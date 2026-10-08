@@ -285,8 +285,8 @@ def carrusel(rid, cat, badge, titulo, sub):
 
 
 # ───────────────── Planes ─────────────────
-def plan_card(plan, nombre, desc, items, hot=False):
-    flag = '<span class="flag">Más elegido</span>' if hot else ""
+def plan_card(plan, nombre, desc, items, hot=False, aviso=""):
+    flag = '<span class="flag">Más elegido</span>' if hot else (f'<span class="flag flag-cupos">{aviso}</span>' if aviso else "")
     btn = "btn-p" if hot else "btn-g"
     lis = "\n".join(f"          <li>{i}</li>" for i in items)
     return f'''      <article class="plan card{' hot' if hot else ''}" data-plan="{plan}">
@@ -320,7 +320,7 @@ PLANS = f'''
     <div class="planes">
 {plan_card("online", "Online", "Tu rutina y seguimiento, estés donde estés.", ["Planificación según tu evaluación", "Corrección de técnica por video", "Pauta de alimentación flexible", "Ajustes cada 4 semanas"])}
 {plan_card("hibrido", "Híbrido", "2 sesiones presenciales al mes + el resto online.", ["Todo el plan Online, y además…", "Sesiones presenciales para pulir técnica", "Evaluación física inicial", "WhatsApp directo conmigo"], hot=True)}
-{plan_card("presencial", "Presencial 1:1", "Entrenamos juntos en cada sesión.", ["Todas las sesiones conmigo", "Técnica y cargas en tiempo real", "Plan de alimentación completo", "Control de progreso mensual"])}
+{plan_card("presencial", "Presencial 1:1", "Entrenamos juntos en cada sesión.", ["Todas las sesiones conmigo", "Técnica y cargas en tiempo real", "Plan de alimentación completo", "Control de progreso mensual"], aviso="Cupos limitados")}
     </div>
   </div>'''
 
@@ -427,9 +427,7 @@ INDEX = head("PabloCoach · Entrenador personal y preparador físico", "Pablo Me
         <article class="pop-slide" aria-label="2 de 3">
           <video class="pop-media" src="assets/video/evaluacion-vo2.mp4" poster="assets/img/evaluacion-vo2.jpg" muted loop playsinline preload="none" data-auto aria-label="Test de VO₂ máx"></video>
           <div class="popup-txt">
-            <span class="badge"><i></i>Respaldo</span>
             <h3>Formación y alto rendimiento</h3>
-            <p class="pop-p">Profesor de Estado de Educación Física titulado en la USACH, con años como deportista de selección y entrenador de handball.</p>
             <div class="stats pop-stats">
               <div class="stat"><b>USACH</b><span>Profesor de Estado</span></div>
               <div class="stat stat-txt"><b>Selección universitaria</b><span>y procesos de selección nacional</span></div>
@@ -448,6 +446,7 @@ INDEX = head("PabloCoach · Entrenador personal y preparador físico", "Pablo Me
       </div>
       <button class="pop-flecha pop-prev" type="button" aria-label="Anterior" data-pop="-1">‹</button>
       <button class="pop-flecha pop-next" type="button" aria-label="Siguiente" data-pop="1">›</button>
+      <div class="pop-hint" aria-hidden="true"><span>Desliza para ver más</span><i>›</i></div>
       <div class="pop-dots" role="tablist" aria-label="Elegir tarjeta"><button type="button" aria-label="Tarjeta 1" aria-current="true"></button><button type="button" aria-label="Tarjeta 2"></button><button type="button" aria-label="Tarjeta 3"></button></div>
       <div class="pop-cta"><a class="btn btn-p btn-w" data-wa="Hola Pablo! Quiero empezar mi camino contigo">Empezar mi camino {ARROW}</a></div>
     </div>
@@ -464,7 +463,7 @@ INDEX = head("PabloCoach · Entrenador personal y preparador físico", "Pablo Me
     <div class="mini-planes">
       <a class="mini card rev" href="planes.html"><b>Online</b><span>Rutina y seguimiento a distancia</span><em>desde <strong data-desde="online"></strong> /mes</em></a>
       <a class="mini card hot rev" href="planes.html"><small class="flag">Más elegido</small><b>Híbrido</b><span>2 presenciales al mes + online</span><em>desde <strong data-desde="hibrido"></strong> /mes</em></a>
-      <a class="mini card rev" href="planes.html"><b>Presencial 1:1</b><span>Todas las sesiones conmigo</span><em>desde <strong data-desde="presencial"></strong> /mes</em></a>
+      <a class="mini card rev" href="planes.html"><small class="flag flag-cupos">Cupos limitados</small><b>Presencial 1:1</b><span>Todas las sesiones conmigo</span><em>desde <strong data-desde="presencial"></strong> /mes</em></a>
     </div>
     <div class="ctas mini-ctas rev">
       <a class="btn btn-p" href="planes.html">Ver planes y precios {ARROW}</a>
@@ -587,7 +586,7 @@ CLIENTES = head("Clientes y entrenamiento · PabloCoach", "Así entrenan los cli
 ''' + FOOT
 
 # ═════════════════════════ PLANES ═════════════════════════
-PLANES = head("Planes · PabloCoach", "Planes Online desde $59.000, Híbrido desde $99.000 y Presencial 1:1 desde $190.000 al mes. Mensual, trimestral o semestral.") + nav("planes.html") + f'''
+PLANES = head("Planes · PabloCoach", "Planes Online desde $69.000, Híbrido desde $99.000 y Presencial 1:1 desde $190.000 al mes. Mensual, trimestral o semestral.") + nav("planes.html") + f'''
 <main>
 <section class="page-hero" style="padding-bottom:60px">
   <div class="wrap">

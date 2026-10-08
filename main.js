@@ -12,7 +12,7 @@ const CONTACTO = {
 // Precios mensuales en CLP según veces por semana. Cambia aquí y se actualiza
 // la página de planes y el asistente.
 const PRECIOS = {
-  online: { nombre: 'Online', 2: 59000, 3: 69000 },
+  online: { nombre: 'Online', 2: 69000, 3: 79000 },
   hibrido: { nombre: 'Híbrido', 2: 99000, 3: 129000 },
   presencial: { nombre: 'Presencial 1:1', 2: 190000, 3: 270000 },
 };
@@ -191,6 +191,8 @@ if (popTrack) {
     puntos.forEach((p, k) => p.setAttribute('aria-current', k === i));
     caja.querySelector('.pop-prev').disabled = i === 0;
     caja.querySelector('.pop-next').disabled = i === total - 1;
+    // El aviso de deslizar desaparece apenas se cambia de tarjeta.
+    if (i > 0) caja.classList.add('pop-visto');
   };
   puntos.forEach((p, k) => p.addEventListener('click', () => irA(k)));
   caja.querySelectorAll('[data-pop]').forEach((b) => b.addEventListener('click', () => irA(actualPop() + Number(b.dataset.pop))));

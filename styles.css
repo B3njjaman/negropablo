@@ -852,3 +852,16 @@ section { padding: 110px 0; position: relative; }
 /* Las fotos rellenan hasta el alto del slide del video (que marca el tamaño). */
 .pop-slide img.pop-media { flex: 1 1 0; height: auto; min-height: 230px; }
 @media (max-width: 640px) { .pop-slide img.pop-media { min-height: 170px; } }
+
+/* Slide del video: más protagonismo al VO2 */
+.pop-slide video.pop-media { height: 330px; }
+.pop-slide:nth-child(2) .popup-txt h3 { margin-top: 2px; }
+@media (max-width: 640px) { .pop-slide video.pop-media { height: 250px; } }
+/* Aviso de que se puede deslizar */
+.pop-hint { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 4px; font-size: 12px; font-weight: 600; color: var(--ink3); transition: opacity .4s ease, height .4s ease; height: 18px; overflow: hidden; }
+.pop-hint i { font-style: normal; font-size: 16px; color: var(--acento); animation: nudge 1.4s ease-in-out infinite; }
+.pop-visto .pop-hint { opacity: 0; height: 0; }
+
+/* Aviso de cupos limitados (Presencial 1:1) */
+.flag-cupos { background: #1e1e1e; color: var(--amarillo); border: 1px solid rgba(255, 210, 63, .45); }
+.mini:has(.flag-cupos) { margin-top: 8px; }
