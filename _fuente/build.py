@@ -251,23 +251,18 @@ VIDEOS = [
 ]
 
 
-def carrusel(rid):
+def carrusel(rid, cat, badge, titulo, sub):
     items = "\n".join(
-        f'''      <li data-cat="{cat}"><button class="vcard" data-src="assets/video/{src}.mp4" aria-label="Ver video: {t}">
+        f'''      <li><button class="vcard" data-src="assets/video/{src}.mp4" aria-label="Ver video: {t}">
         <span class="fr"><img src="assets/img/{src}.jpg" alt="" loading="lazy"><span class="tg">{tag}</span><span class="pl">{PLAY}</span><span class="du">{du}</span></span>
         <b>{t}</b><small>{d}</small></button></li>'''
-        for src, t, d, cat, tag, du in VIDEOS)
+        for src, t, d, c, tag, du in VIDEOS if c == cat)
     return f'''
 <section style="padding-top:20px">
   <div class="wrap center">
-    <span class="badge rev"><i></i>Videos</span>
-    <h2 class="rev">Clientes reales, <span class="grad">de todas las edades.</span></h2>
-    <p class="sub rev">En el gimnasio, en casa o al aire libre. Toca un video para verlo en grande.</p>
-    <div class="vfilter rev" data-row="#{rid}" role="group" aria-label="Filtrar videos" style="margin-top:28px">
-      <button type="button" aria-pressed="true" data-cat="todos">Todos</button>
-      <button type="button" aria-pressed="false" data-cat="clientes">Mis clientes</button>
-      <button type="button" aria-pressed="false" data-cat="entrenamientos">Mis entrenamientos</button>
-    </div>
+    <span class="badge rev"><i></i>{badge}</span>
+    <h2 class="rev">{titulo}</h2>
+    <p class="sub rev">{sub}</p>
   </div>
   <div class="wrap">
     <ul class="vrow" id="{rid}">
@@ -525,10 +520,6 @@ SOBRE = head("Sobre mí · Pablo Meza", "Pablo Nicolás Meza Espinosa: Profesor 
   <div class="wrap career">
     <div class="career-media">
       <img class="rev" src="assets/img/pablo-handball-celebra.jpg" alt="Pablo Meza celebrando un gol con la camiseta de Kutral" loading="lazy">
-      <button class="vcard rev" data-src="assets/video/handball-partido.mp4" aria-label="Ver video: Pablo en cancha">
-        <span class="fr" style="aspect-ratio:16/10"><img src="assets/img/handball-partido.jpg" alt="" loading="lazy" style="object-position:center 60%"><span class="tg">Handball</span><span class="pl">{PLAY}</span><span class="du">0:48</span></span>
-        <b>Pablo en cancha</b><small>Partido de handball competitivo</small>
-      </button>
     </div>
     <div>
       <span class="eyebrow rev">Experiencia que respalda mi método</span>
@@ -541,6 +532,7 @@ SOBRE = head("Sobre mí · Pablo Meza", "Pablo Nicolás Meza Espinosa: Profesor 
   </div>
 </section>
 
+{carrusel("videos-pablo", "entrenamientos", "Mis entrenamientos", 'Pablo, <span class="grad">entrenando.</span>', "Evaluación, gimnasio y cancha. Toca un video para verlo en grande.")}
 <section style="padding-top:20px">
   <div class="wrap">
     <div class="head center">
@@ -561,7 +553,7 @@ SOBRE = head("Sobre mí · Pablo Meza", "Pablo Nicolás Meza Espinosa: Profesor 
 CLIENTES = head("Clientes y entrenamiento · Negro Pablo", "Así entrenan los clientes de Pablo Meza: en el gimnasio, a domicilio y adultos mayores, con evaluación y técnica guiada.", "assets/img/c-bulgara.jpg") + nav("clientes.html") + f'''
 <main>
 {bloque_historias("historias-clientes", "Clientes y entrenamiento", 'Así se entrena, <span class="grad">por dentro.</span>', "Jóvenes, adultos y adultos mayores, en el gimnasio o a domicilio. Toca a la derecha para avanzar y mantén presionado para pausar.")}
-{carrusel("videos")}
+{carrusel("videos", "clientes", "Mis clientes", 'Clientes reales, <span class="grad">de todas las edades.</span>', "En el gimnasio, en casa o al aire libre. Toca un video para verlo en grande.")}
 {cta('¿Quieres entrenar <span style="opacity:.75">así?</span>', 'Evaluación, técnica guiada y un plan que progresa contigo.', "cliente-dominadas")}
 </main>
 ''' + FOOT
