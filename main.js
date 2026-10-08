@@ -4,7 +4,7 @@
 
 // Datos de contacto: cambia aquí y se actualiza todo el sitio.
 const CONTACTO = {
-  whatsapp: '56900000000', // código de país + número, sin "+" ni espacios
+  whatsapp: '56964067622', // código de país + número, sin "+" ni espacios
   instagram: 'negropablo',
   email: 'contacto@negropablo.cl',
 };
