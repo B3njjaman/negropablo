@@ -738,3 +738,4 @@ section { padding: 110px 0; position: relative; }
   .logo .logo-txt { width: 128px; }
   .logo-foot img { width: 170px; }
 }
+.stat-txt b { font-size: 20px; line-height: 1.15; margin-bottom: 4px; }

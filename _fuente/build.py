@@ -431,7 +431,7 @@ INDEX = head("PabloCoach · Entrenador personal y preparador físico", "Pablo Me
             <p>Profesor de Estado de Educación Física titulado en la USACH, con años como deportista de selección y entrenador de handball.</p>
             <div class="stats">
               <div class="stat"><b>USACH</b><span>Profesor de Estado</span></div>
-              <div class="stat"><b>Selección</b><span>nacional de handball</span></div>
+              <div class="stat stat-txt"><b>Selección universitaria</b><span>y procesos de selección nacional</span></div>
             </div>
           </div>
           <video src="assets/video/evaluacion-vo2.mp4" poster="assets/img/evaluacion-vo2.jpg" muted loop playsinline preload="none" data-auto></video>
