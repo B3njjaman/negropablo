@@ -739,3 +739,9 @@ section { padding: 110px 0; position: relative; }
   .logo-foot img { width: 170px; }
 }
 .stat-txt b { font-size: 20px; line-height: 1.15; margin-bottom: 4px; }
+
+/* Carrusel de planes en celular: cada tarjeta queda centrada al deslizar */
+@media (max-width: 860px) {
+  .planes { padding-inline: 8vw; scroll-padding-inline: 0; }
+  .planes .plan { flex: 0 0 84vw; scroll-snap-align: center; }
+}
