@@ -310,7 +310,7 @@ PLANS = f'''
     </div>
     <div class="planes">
 {plan_card("online", "Online", "Tu rutina y seguimiento, estés donde estés.", ["Planificación según tu evaluación", "Corrección de técnica por video", "Pauta de alimentación flexible", "Ajustes cada 4 semanas"])}
-{plan_card("hibrido", "Híbrido", "Una sesión presencial por semana + el resto online.", ["Todo el plan Online, y además…", "Sesiones presenciales para pulir técnica", "Evaluación física inicial", "WhatsApp directo conmigo"], hot=True)}
+{plan_card("hibrido", "Híbrido", "2 sesiones presenciales al mes + el resto online.", ["Todo el plan Online, y además…", "Sesiones presenciales para pulir técnica", "Evaluación física inicial", "WhatsApp directo conmigo"], hot=True)}
 {plan_card("presencial", "Presencial 1:1", "Entrenamos juntos en cada sesión.", ["Todas las sesiones conmigo", "Técnica y cargas en tiempo real", "Plan de alimentación completo", "Control de progreso mensual"])}
     </div>
   </div>'''
@@ -452,7 +452,7 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
     <div class="head center">
       <span class="eyebrow rev">Planes</span>
       <h2 class="rev">Elige el plan que más <span class="grad">te acomoda</span></h2>
-      <p class="sub rev">Planes mensuales, trimestrales y semestrales para entrenar 2 o 3 veces por semana. <span class="highlight">Cuanto más largo el plan, más económico cada mes.</span></p>
+      <p class="sub rev">Planes mensuales, trimestrales y semestrales para entrenar 2 o 3 veces por semana. <span class="highlight">Cuanto más largo el plan, mejores resultados y mayor sostenibilidad.</span></p>
     </div>
 {PLANS}
 {ASSIST}
@@ -582,7 +582,7 @@ PLANES = head("Planes · Negro Pablo", "Planes Online desde $59.000, Híbrido de
     <div class="head center">
       <span class="badge in-1"><i></i>Planes y precios</span>
       <h1 class="in-2">Elige el plan que más <span class="grad">te acomoda.</span></h1>
-      <p class="sub in-3">Planes mensuales, trimestrales y semestrales para entrenar 2 o 3 veces por semana. <span class="highlight">Cuanto más largo el plan, más económico cada mes.</span></p>
+      <p class="sub in-3">Planes mensuales, trimestrales y semestrales para entrenar 2 o 3 veces por semana. <span class="highlight">Cuanto más largo el plan, mejores resultados y mayor sostenibilidad.</span></p>
     </div>
 {PLANS}
     <p class="note rev">Valores mensuales en pesos chilenos. Pago por transferencia, coordinado por WhatsApp. Cupos limitados.</p>

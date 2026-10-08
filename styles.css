@@ -724,3 +724,4 @@ section { padding: 110px 0; position: relative; }
 .camino-anim .camino-meta.on { opacity: 1; }
 .camino-anim .popup-in { opacity: 0; transform: translateY(50px) scale(.9); transition: opacity .7s ease, transform .9s cubic-bezier(.2, .8, .2, 1); }
 .camino-anim .camino-popup.on .popup-in { opacity: 1; transform: none; }
+.ses[hidden] { display: none; }

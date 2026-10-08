@@ -246,8 +246,9 @@ document.querySelectorAll('.vfilter[data-row]').forEach((group) => {
 // Planes: veces por semana × período de pago
 const detallePlan = (plan, veces) => {
   const sesiones = veces * 4;
-  if (plan === 'online') return { ses: `${sesiones} entrenamientos al mes`, valor: 'Rutina + seguimiento online' };
-  if (plan === 'hibrido') return { ses: `4 presenciales + ${sesiones - 4} online`, valor: '1 sesión presencial por semana' };
+  // El Online de 3 veces por semana no muestra conteo de entrenamientos.
+  if (plan === 'online') return { ses: veces === 3 ? '' : `${sesiones} entrenamientos al mes`, valor: 'Rutina + seguimiento online' };
+  if (plan === 'hibrido') return { ses: `2 presenciales + ${sesiones - 2} online`, valor: '2 sesiones presenciales al mes' };
   return { ses: `${sesiones} sesiones 1:1 al mes`, valor: `Valor sesión ${clp(PRECIOS.presencial[veces] / sesiones)}` };
 };
 
@@ -261,7 +262,9 @@ document.querySelectorAll('.pricing').forEach((root) => {
       const mes = precioMes(plan, veces, periodo);
       const { ses, valor } = detallePlan(plan, veces);
       card.querySelector('[data-precio]').textContent = clp(mes);
-      card.querySelector('[data-ses]').textContent = ses;
+      const pildora = card.querySelector('[data-ses]');
+      pildora.textContent = ses;
+      pildora.hidden = !ses;
       card.querySelector('[data-valor]').textContent = plan === 'presencial'
         ? `Valor sesión ${clp(mes / (veces * 4))}`
         : valor;
