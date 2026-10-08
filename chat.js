@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════
-   NEGRO PABLO — chat.js
+   PABLOCOACH — chat.js
    Asistente que detecta necesidades y recomienda un plan
    ═══════════════════════════════════════════════ */
 (() => {
@@ -228,7 +228,7 @@
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   // ── DOM ──
-  const AV = '<span class="np-av" aria-hidden="true">NP</span>';
+  const AV = '<span class="np-av" aria-hidden="true"><img src="assets/img/logo-pc.png" alt=""></span>';
   const SEND = '<svg viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M2.5 2.8l15 7.2-15 7.2 2.3-7.2z"/></svg>';
   document.body.insertAdjacentHTML('beforeend', `
     <button class="np-launch" aria-controls="npChat" aria-expanded="false">

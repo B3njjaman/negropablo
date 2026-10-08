@@ -1,12 +1,12 @@
 /* ═══════════════════════════════════════════════
-   NEGRO PABLO — main.js
+   PABLOCOACH — main.js
    ═══════════════════════════════════════════════ */
 
 // Datos de contacto: cambia aquí y se actualiza todo el sitio.
 const CONTACTO = {
   whatsapp: '56964067622', // código de país + número, sin "+" ni espacios
-  instagram: 'negropablo',
-  email: 'contacto@negropablo.cl',
+  instagram: 'pablocoach', // por confirmar
+  email: 'contacto@pablocoach.cl', // por confirmar
 };
 
 // Precios mensuales en CLP según veces por semana. Cambia aquí y se actualiza

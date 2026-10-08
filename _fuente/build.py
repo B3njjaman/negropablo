@@ -51,10 +51,12 @@ def head(title, desc, og="assets/img/pablo-handball-salto.jpg"):
   <title>{title}</title>
   <meta name="description" content="{desc}">
   <meta name="theme-color" content="#060606">
+  <meta property="og:site_name" content="PabloCoach">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
   <meta property="og:image" content="{og}">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' x2='1' y1='0' y2='1'><stop offset='0' stop-color='%23e63946'/><stop offset='1' stop-color='%23ff6b35'/></linearGradient></defs><rect width='64' height='64' rx='18' fill='url(%23g)'/><text x='32' y='42' font-family='Arial' font-weight='800' font-size='26' fill='white' text-anchor='middle'>NP</text></svg>">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -71,7 +73,7 @@ def nav(active):
     return f'''<header class="nav">
   <div class="wrap">
     <div class="nav-in">
-      <a href="index.html" class="logo"><b>NP</b>Negro Pablo</a>
+      <a href="index.html" class="logo" aria-label="PabloCoach, inicio"><img class="logo-pc" src="assets/img/logo-pc.png" alt="" width="85" height="30"><img class="logo-txt" src="assets/img/logo-texto.png" alt="PabloCoach" width="185" height="15"></a>
       <nav class="nav-d" aria-label="Principal">
 {links}
         <a class="btn btn-p btn-s" data-wa="Hola Pablo! Quiero info para empezar a entrenar">Empezar ahora</a>
@@ -107,7 +109,7 @@ FOOT = f'''
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a href="index.html" class="logo"><b>NP</b>Negro Pablo</a>
+        <a href="index.html" class="logo-foot" aria-label="PabloCoach, inicio"><img src="assets/img/logo-pablocoach.png" alt="PabloCoach · Personal Trainer" width="200" height="106" loading="lazy"></a>
         <p>Pablo Meza · Profesor de Estado de Educación Física (USACH), entrenador y preparador físico.</p>
       </div>
       <div>
@@ -136,7 +138,7 @@ FOOT = f'''
       </div>
     </div>
     <div class="foot-bot">
-      <span>© <span data-year></span> Pablo Meza · Negro Pablo</span>
+      <span>© <span data-year></span> Pablo Meza · PabloCoach</span>
       <span>No se trata de entrenar más. Se trata de entrenar mejor.</span>
     </div>
   </div>
@@ -222,7 +224,7 @@ def bloque_historias(sid, badge, titulo, sub, extra=""):
     <div class="st-phone rev">
       <div class="stories" id="{sid}" tabindex="0" role="region" aria-roledescription="historias" aria-label="Clientes y entrenamiento. Usa las flechas para avanzar.">
 {slides}
-        <div class="st-top"><div class="st-bars"></div><div class="st-user"><span class="np-av">NP</span>Pablo Meza · Entrenador</div></div>
+        <div class="st-top"><div class="st-bars"></div><div class="st-user"><span class="np-av"><img src="assets/img/logo-pc.png" alt=""></span>PabloCoach · Pablo Meza</div></div>
         <span class="st-hint" aria-hidden="true">›</span>
       </div>
     </div>
@@ -317,7 +319,7 @@ PLANS = f'''
 
 ASSIST = f'''
     <div class="assist card rev">
-      <span class="np-av" aria-hidden="true">NP</span>
+      <span class="np-av" aria-hidden="true"><img src="assets/img/logo-pc.png" alt=""></span>
       <div>
         <h3>¿No sabes cuál elegir?</h3>
         <p>Responde unas preguntas (objetivo, lesiones, días disponibles) y te recomiendo el plan ideal.</p>
@@ -343,7 +345,7 @@ def faq_html():
 
 
 # ═════════════════════════ INICIO ═════════════════════════
-INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo Meza, Profesor de Estado de Educación Física (USACH), entrenador y preparador físico. Entrenamiento online, híbrido y presencial 1:1.") + nav("index.html") + f'''
+INDEX = head("PabloCoach · Entrenador personal y preparador físico", "Pablo Meza, Profesor de Estado de Educación Física (USACH), entrenador y preparador físico. Entrenamiento online, híbrido y presencial 1:1.") + nav("index.html") + f'''
 <main>
 <section class="hero">
   <div class="wrap hero-grid">
@@ -566,7 +568,7 @@ SOBRE = head("Sobre mí · Pablo Meza", "Pablo Nicolás Meza Espinosa: Profesor 
 ''' + FOOT
 
 # ═════════════════════════ CLIENTES Y ENTRENAMIENTO ═════════════════════════
-CLIENTES = head("Clientes y entrenamiento · Negro Pablo", "Así entrenan los clientes de Pablo Meza: en el gimnasio, a domicilio y adultos mayores, con evaluación y técnica guiada.", "assets/img/c-bulgara.jpg") + nav("clientes.html") + f'''
+CLIENTES = head("Clientes y entrenamiento · PabloCoach", "Así entrenan los clientes de Pablo Meza: en el gimnasio, a domicilio y adultos mayores, con evaluación y técnica guiada.", "assets/img/c-bulgara.jpg") + nav("clientes.html") + f'''
 <main>
 {bloque_historias("historias-clientes", "Clientes y entrenamiento", 'Así se entrena, <span class="grad">por dentro.</span>', "Jóvenes, adultos y adultos mayores, en el gimnasio o a domicilio. Toca a la derecha para avanzar.")}
 {carrusel("videos", "clientes", "Mis clientes", 'Clientes reales, <span class="grad">de todas las edades.</span>', "En el gimnasio, en casa o al aire libre. Toca un video para verlo en grande.")}
@@ -575,7 +577,7 @@ CLIENTES = head("Clientes y entrenamiento · Negro Pablo", "Así entrenan los cl
 ''' + FOOT
 
 # ═════════════════════════ PLANES ═════════════════════════
-PLANES = head("Planes · Negro Pablo", "Planes Online desde $59.000, Híbrido desde $99.000 y Presencial 1:1 desde $190.000 al mes. Mensual, trimestral o semestral.") + nav("planes.html") + f'''
+PLANES = head("Planes · PabloCoach", "Planes Online desde $59.000, Híbrido desde $99.000 y Presencial 1:1 desde $190.000 al mes. Mensual, trimestral o semestral.") + nav("planes.html") + f'''
 <main>
 <section class="page-hero" style="padding-bottom:60px">
   <div class="wrap">
@@ -604,7 +606,7 @@ PLANES = head("Planes · Negro Pablo", "Planes Online desde $59.000, Híbrido de
 ''' + FOOT
 
 # ═════════════════════════ CONTACTO ═════════════════════════
-CONTACTO = head("Contacto · Negro Pablo", "Escríbele a Pablo Meza y arma tu plan de entrenamiento.") + nav("contacto.html") + f'''
+CONTACTO = head("Contacto · PabloCoach", "Escríbele a Pablo Meza y arma tu plan de entrenamiento.") + nav("contacto.html") + f'''
 <main>
 <section class="page-hero">
   <div class="wrap">
@@ -644,8 +646,8 @@ CONTACTO = head("Contacto · Negro Pablo", "Escríbele a Pablo Meza y arma tu pl
       <div class="side">
         <button class="card in-4" data-chat-open style="text-align:left;width:100%"><span class="ico">{ICONOS["asistente"]}</span><div><small>Asistente</small><strong>Descubre tu plan en 1 minuto</strong></div></button>
         <a class="card in-4" data-wa="Hola Pablo!"><span class="ico">{ICONOS["whatsapp"]}</span><div><small>WhatsApp</small><strong>+56 9 6406 7622</strong></div></a>
-        <a class="card in-5" data-ig><span class="ico">{ICONOS["instagram"]}</span><div><small>Instagram</small><strong data-ig data-ig-text>@negropablo</strong></div></a>
-        <a class="card in-5" data-mail><span class="ico">{ICONOS["email"]}</span><div><small>Email</small><strong data-mail data-mail-text>contacto@negropablo.cl</strong></div></a>
+        <a class="card in-5" data-ig><span class="ico">{ICONOS["instagram"]}</span><div><small>Instagram</small><strong data-ig data-ig-text>@pablocoach</strong></div></a>
+        <a class="card in-5" data-mail><span class="ico">{ICONOS["email"]}</span><div><small>Email</small><strong data-mail data-mail-text>contacto@pablocoach.cl</strong></div></a>
       </div>
     </div>
   </div>
