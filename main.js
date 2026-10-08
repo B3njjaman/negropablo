@@ -178,6 +178,27 @@ const animarCamino = () => {
 if (document.readyState === 'complete') animarCamino();
 else window.addEventListener('load', animarCamino);
 
+// Carrusel de la meta: se desliza con el dedo; puntos y flechas para saltar.
+const popTrack = document.querySelector('#popTrack');
+if (popTrack) {
+  const caja = popTrack.closest('.popup-in');
+  const puntos = [...caja.querySelectorAll('.pop-dots button')];
+  const total = popTrack.children.length;
+  const actualPop = () => Math.round(popTrack.scrollLeft / popTrack.clientWidth);
+  const irA = (i) => popTrack.scrollTo({ left: Math.max(0, Math.min(total - 1, i)) * popTrack.clientWidth, behavior: 'smooth' });
+  const marcar = () => {
+    const i = actualPop();
+    puntos.forEach((p, k) => p.setAttribute('aria-current', k === i));
+    caja.querySelector('.pop-prev').disabled = i === 0;
+    caja.querySelector('.pop-next').disabled = i === total - 1;
+  };
+  puntos.forEach((p, k) => p.addEventListener('click', () => irA(k)));
+  caja.querySelectorAll('[data-pop]').forEach((b) => b.addEventListener('click', () => irA(actualPop() + Number(b.dataset.pop))));
+  popTrack.addEventListener('scroll', () => requestAnimationFrame(marcar), { passive: true });
+  marcar();
+  new IntersectionObserver(([e]) => document.body.classList.toggle('sin-lanzador', e.isIntersecting), { threshold: 0.2 }).observe(caja);
+}
+
 // Contadores
 const counter = new IntersectionObserver(
   (entries) => entries.forEach((e) => {

@@ -211,8 +211,8 @@ section { padding: 110px 0; position: relative; }
 .camino-yo span { display: grid; place-items: center; width: 100%; height: 100%; }
 .camino-anim .camino-yo { display: block; }
 .camino-popup { position: relative; z-index: 6; width: min(440px, calc(100% - 32px)); margin: 36px auto 0; }
-.popup-in { overflow: hidden; border-radius: 28px; background: var(--dark2); border: 1px solid rgba(255, 107, 53, .35); box-shadow: 0 40px 90px -30px rgba(230, 57, 70, .6), var(--sh); }
-.popup-in > img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 22%; }
+.popup-in { position: relative; overflow: hidden; border-radius: 28px; background: var(--dark2); border: 1px solid rgba(255, 107, 53, .35); box-shadow: 0 40px 90px -30px rgba(230, 57, 70, .6), var(--sh); }
+.pop-media { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 22%; background: #000; }
 .popup-txt { padding: 22px 24px 24px; text-align: center; }
 .popup-txt p { margin-top: 14px; font-size: 22px; font-weight: 800; line-height: 1.25; letter-spacing: -.03em; }
 .popup-txt .grad { display: block; font-size: 30px; }
@@ -769,7 +769,7 @@ section { padding: 110px 0; position: relative; }
   .mini.hot { margin-top: 8px; }
   .mini-ctas .btn { flex: 1 1 100%; }
   /* Meta más compacta */
-  .popup-in > img { aspect-ratio: 2 / 1; }
+  .pop-media { aspect-ratio: 2 / 1; }
   .popup-txt { padding: 18px 20px 20px; }
   /* Footer compacto */
   .foot { padding: 44px 0 28px; margin-top: 10px; }
@@ -783,3 +783,43 @@ section { padding: 110px 0; position: relative; }
   /* Historias un poco más bajas */
   .st-phone { height: min(70svh, 600px); }
 }
+
+/* Carrusel dentro de la meta */
+.pop-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.pop-track::-webkit-scrollbar { display: none; }
+.pop-slide { flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always; }
+.popup-txt h3 { margin-top: 12px; font-size: 24px; }
+.popup-txt .pop-p { margin-top: 8px; font-size: 15px; font-weight: 500; line-height: 1.5; letter-spacing: 0; color: var(--ink2); }
+.pop-stats { margin-top: 14px; text-align: left; }
+.pop-stats .stat b { font-size: 22px; }
+.pop-stats .stat-txt b { font-size: 16px; }
+.popup-txt .btn-s { margin-top: 16px; }
+.pop-dots { display: flex; justify-content: center; gap: 8px; padding: 2px 0 14px; }
+.pop-dots button { width: 8px; height: 8px; border-radius: 99px; background: rgba(255, 255, 255, .22); transition: width .3s var(--ease), background .3s; }
+.pop-dots button[aria-current="true"] { width: 24px; background: var(--grad-btn); }
+.pop-cta { padding: 0 24px 22px; }
+.pop-flecha { position: absolute; top: calc(min(440px, 100vw - 32px) * .625 / 2); translate: 0 -50%; z-index: 2; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: rgba(0, 0, 0, .55); color: #fff; font-size: 22px; line-height: 1; transition: opacity .2s; }
+.pop-flecha:disabled { opacity: 0; pointer-events: none; }
+.pop-prev { left: 12px; }
+.pop-next { right: 12px; }
+@media (max-width: 640px) {
+  .pop-flecha { top: calc((100vw - 32px) * .5 / 2); width: 34px; height: 34px; }
+  .pop-cta { padding: 0 20px 18px; }
+  .popup-txt h3 { font-size: 21px; }
+  .popup-txt .pop-p { font-size: 13.5px; }
+}
+
+/* Las fotos de la meta llenan el alto de la tarjeta (la más alta marca el tamaño). */
+.pop-slide { display: flex; flex-direction: column; }
+.pop-slide .pop-media { flex: 1 1 auto; aspect-ratio: auto; min-height: 260px; height: 100%; }
+.pop-slide .popup-txt { flex: none; }
+.pop-slide:first-child .popup-txt p { margin-top: 0; }
+@media (max-width: 640px) {
+  .pop-slide .pop-media { min-height: 180px; }
+}
+/* El slide del video marca el alto; las fotos de Pablo rellenan ese mismo alto. */
+.pop-slide video.pop-media { min-height: 300px; }
+.pop-slide img.pop-media { min-height: 0; }
+@media (max-width: 640px) { .pop-slide video.pop-media { min-height: 230px; } }
+/* Mientras la meta está en pantalla, el botón del asistente se esconde (tapaba el CTA). */
+.sin-lanzador .np-launch { opacity: 0; pointer-events: none; transform: translateY(16px); }

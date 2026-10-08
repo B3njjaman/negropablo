@@ -42,7 +42,7 @@ GSAP = ('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.mi
         '<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>\n')
 
 
-def head(title, desc, og="assets/img/pablo-handball-salto.jpg"):
+def head(title, desc, og="assets/img/og-pablocoach.jpg"):
     return f'''<!doctype html>
 <html lang="es">
 <head>
@@ -54,7 +54,14 @@ def head(title, desc, og="assets/img/pablo-handball-salto.jpg"):
   <meta property="og:site_name" content="PabloCoach">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
-  <meta property="og:image" content="{og}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://b3njjaman.github.io/negropablo/">
+  <meta property="og:image" content="https://b3njjaman.github.io/negropablo/{og}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="PabloCoach · Personal Trainer">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://b3njjaman.github.io/negropablo/{og}">
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -409,14 +416,40 @@ INDEX = head("PabloCoach · Entrenador personal y preparador físico", "Pablo Me
   </div>
   <div class="camino-popup">
     <div class="popup-in">
-      <img src="assets/img/pablo-handball-salto.jpg" alt="Pablo Meza jugando handball">
-      <div class="popup-txt">
-        <span class="badge"><i></i>¡Llegaste a la meta!</span>
-        <p>Porque no se trata de entrenar más, <span class="grad">se trata de entrenar mejor.</span></p>
-        <span class="firma">— Pablo Meza</span>
-        <p class="cred">Profesor de Estado USACH · Selección universitaria y procesos de selección nacional · <a href="sobre-mi.html">Conoce a Pablo</a></p>
-        <a class="btn btn-p btn-w" data-wa="Hola Pablo! Quiero empezar mi camino contigo">Empezar mi camino {ARROW}</a>
+      <div class="pop-track" id="popTrack" aria-roledescription="carrusel" aria-label="La meta y quién es Pablo">
+        <article class="pop-slide" aria-label="1 de 3">
+          <img class="pop-media" src="assets/img/pablo-handball-salto.jpg" alt="Pablo Meza jugando handball" loading="lazy">
+          <div class="popup-txt">
+            <p>Porque no se trata de entrenar más, <span class="grad">se trata de entrenar mejor.</span></p>
+            <span class="firma">— Pablo Meza</span>
+          </div>
+        </article>
+        <article class="pop-slide" aria-label="2 de 3">
+          <video class="pop-media" src="assets/video/evaluacion-vo2.mp4" poster="assets/img/evaluacion-vo2.jpg" muted loop playsinline preload="none" data-auto aria-label="Test de VO₂ máx"></video>
+          <div class="popup-txt">
+            <span class="badge"><i></i>Respaldo</span>
+            <h3>Formación y alto rendimiento</h3>
+            <p class="pop-p">Profesor de Estado de Educación Física titulado en la USACH, con años como deportista de selección y entrenador de handball.</p>
+            <div class="stats pop-stats">
+              <div class="stat"><b>USACH</b><span>Profesor de Estado</span></div>
+              <div class="stat stat-txt"><b>Selección universitaria</b><span>y procesos de selección nacional</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="pop-slide" aria-label="3 de 3">
+          <img class="pop-media" src="assets/img/pablo-handball-celebra.jpg" alt="Pablo Meza celebrando un gol" loading="lazy" style="object-position:50% 25%">
+          <div class="popup-txt">
+            <span class="badge"><i></i>Trayectoria</span>
+            <h3>Conoce a Pablo</h3>
+            <p class="pop-p">Campeón nacional, competencias internacionales y años formando deportistas.</p>
+            <a class="btn btn-g btn-s" href="sobre-mi.html">Sobre mí {ARROW}</a>
+          </div>
+        </article>
       </div>
+      <button class="pop-flecha pop-prev" type="button" aria-label="Anterior" data-pop="-1">‹</button>
+      <button class="pop-flecha pop-next" type="button" aria-label="Siguiente" data-pop="1">›</button>
+      <div class="pop-dots" role="tablist" aria-label="Elegir tarjeta"><button type="button" aria-label="Tarjeta 1" aria-current="true"></button><button type="button" aria-label="Tarjeta 2"></button><button type="button" aria-label="Tarjeta 3"></button></div>
+      <div class="pop-cta"><a class="btn btn-p btn-w" data-wa="Hola Pablo! Quiero empezar mi camino contigo">Empezar mi camino {ARROW}</a></div>
     </div>
   </div>
 </section>
@@ -545,7 +578,7 @@ SOBRE = head("Sobre mí · Pablo Meza", "Pablo Nicolás Meza Espinosa: Profesor 
 ''' + FOOT
 
 # ═════════════════════════ CLIENTES Y ENTRENAMIENTO ═════════════════════════
-CLIENTES = head("Clientes y entrenamiento · PabloCoach", "Así entrenan los clientes de Pablo Meza: en el gimnasio, a domicilio y adultos mayores, con evaluación y técnica guiada.", "assets/img/c-bulgara.jpg") + nav("clientes.html") + f'''
+CLIENTES = head("Clientes y entrenamiento · PabloCoach", "Así entrenan los clientes de Pablo Meza: en el gimnasio, a domicilio y adultos mayores, con evaluación y técnica guiada.", ) + nav("clientes.html") + f'''
 <main>
 {bloque_historias("historias-clientes", "Clientes y entrenamiento", 'Así se entrena, <span class="grad">por dentro.</span>', "Jóvenes, adultos y adultos mayores, en el gimnasio o a domicilio. Toca a la derecha para avanzar.")}
 {carrusel("videos", "clientes", "Mis clientes", 'Clientes reales, <span class="grad">de todas las edades.</span>', "En el gimnasio, en casa o al aire libre. Toca un video para verlo en grande.")}
