@@ -83,16 +83,20 @@ document.querySelectorAll('.rev').forEach((el, i) => {
   revealer.observe(el);
 });
 
-// Historia de la portada (GSAP + ScrollTrigger): la sección queda fija y cada
-// frase entra palabra por palabra mientras se hace scroll.
+// Historia: cada paso ocupa el centro y deja una breve huella antes del cierre.
 const partirEnPalabras = (p) => {
   [...p.childNodes].forEach((nodo) => {
-    if (nodo.nodeType === Node.ELEMENT_NODE) { nodo.classList.add('w'); return; }
+    if (nodo.nodeType === Node.ELEMENT_NODE) {
+      // El degradado queda entero para envolver líneas sin cortar su luz.
+      if (!nodo.classList.contains('grad')) partirEnPalabras(nodo);
+      return;
+    }
+    if (nodo.nodeType !== Node.TEXT_NODE) return;
     const trozos = nodo.textContent.split(/(\s+)/);
     const frag = document.createDocumentFragment();
     trozos.forEach((t) => {
       if (!t) return;
-      if (/^\s+$/.test(t)) { frag.append(' '); return; }
+      if (/^\s+$/.test(t)) { frag.append(t); return; }
       const w = document.createElement('span');
       w.className = 'w';
       w.textContent = t;
@@ -104,38 +108,114 @@ const partirEnPalabras = (p) => {
 
 const animarHistoria = () => {
   const historia = document.querySelector('.story');
-  const sinMovimiento = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!historia || !window.gsap || !window.ScrollTrigger || sinMovimiento) return;
+  if (!historia || !window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
 
   const lineas = [...historia.querySelectorAll('p')];
-  lineas.forEach(partirEnPalabras);
+  const originales = lineas.map((linea) => linea.innerHTML);
   const pasos = [...historia.querySelectorAll('.story-steps span')];
-  const frase = historia.querySelector('.grad');
+  const numeros = [...historia.querySelectorAll('.story-counter span')];
+  const foto = historia.querySelector('.story-foto');
+  const brillo = historia.querySelector('.story-glow');
+  const halo = historia.querySelector('.story-halo');
+  const orbitas = [...historia.querySelectorAll('.story-orbit')];
+  const barra = historia.querySelector('.story-bar i');
+  const medios = gsap.matchMedia();
 
-  gsap.set(historia.querySelectorAll('.w'), { opacity: 0.06, yPercent: 70, rotateX: -75, filter: 'blur(10px)' });
-  gsap.set('.story-bar i', { scaleX: 0 });
+  medios.add({
+    escritorio: '(min-width: 641px)',
+    movil: '(max-width: 640px)',
+    sinMovimiento: '(prefers-reduced-motion: reduce)',
+    pocaAltura: '(max-height: 620px)',
+  }, (contexto) => {
+    const { movil, sinMovimiento, pocaAltura } = contexto.conditions;
+    // En pantallas bajas y con movimiento reducido se conserva el flujo normal.
+    if (sinMovimiento || pocaAltura) return;
+    historia.classList.add('story-animada');
+    lineas.forEach(partirEnPalabras);
+    const palabras = lineas.map((linea) => [...linea.querySelectorAll('.w')]);
+    const frase = historia.querySelector('.grad');
+    const recuerdo = movil ? -104 : -96;
+    const entrada = movil ? 22 : 38;
+    const paralaje = movil
+      ? { inicio: 0, fin: 5, escalaInicial: 1.02, escalaFinal: 1.04 }
+      : { inicio: -3, fin: 7, escalaInicial: 1.03, escalaFinal: 1.06 };
+    let pasoActual = -1;
 
-  const tl = gsap.timeline({
-    defaults: { ease: 'power3.out' },
-    scrollTrigger: { trigger: historia, start: 'top top', end: '+=260%', pin: true, scrub: 0.8 },
-    onUpdate: () => pasos.forEach((paso, i) => paso.classList.toggle('on', tl.time() >= tl.labels[`l${i}`] + 0.3)),
-  });
+    const activarPaso = (indice) => {
+      if (indice === pasoActual) return;
+      pasos.forEach((paso, i) => paso.classList.toggle('on', indice === 3 || i === indice));
+      pasoActual = indice;
+    };
 
-  lineas.forEach((linea, i) => {
-    tl.addLabel(`l${i}`);
-    if (i > 0) tl.to(lineas[i - 1], { opacity: 0.28, scale: 0.97, duration: 0.6 }, `l${i}`);
-    tl.to(linea.querySelectorAll('.w'), {
-      opacity: 1, yPercent: 0, rotateX: 0, filter: 'blur(0px)', duration: 0.8, stagger: 0.07,
-    }, `l${i}`);
-  });
+    // Solo ocultamos contenido después de confirmar las dos librerías.
+    gsap.set(palabras[0], { y: 10, opacity: 0.78 });
+    gsap.set(lineas.slice(1), { opacity: 0 });
+    gsap.set(palabras.slice(1).flat(), { y: entrada, rotation: 3, opacity: 0, filter: `blur(${movil ? 2 : 5}px)` });
+    gsap.set(frase, { opacity: 0, y: entrada, scale: 0.96 });
+    gsap.set(numeros.slice(1), { opacity: 0, yPercent: 45, scale: 0.86, rotationX: -35 });
+    gsap.set(pasos, { opacity: 0.58, scale: 0.97 });
+    gsap.set(pasos[0], { opacity: 1, scale: 1 });
+    gsap.set(barra, { scaleX: 0 });
+    activarPaso(0);
 
-  tl.fromTo(frase, { scale: 0.88 }, { scale: 1, duration: 0.9, ease: 'back.out(2)' }, '-=0.5')
-    .to(frase, { backgroundPosition: '0% 0', duration: 1.1, ease: 'none' }, '<')
-    .to('.story-glow', { opacity: 1, scale: 1.25, duration: 1.1 }, '<')
-    .to({}, { duration: 0.6 });
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.out' },
+      scrollTrigger: {
+        trigger: historia, start: 'top top',
+        end: () => `+=${Math.round(historia.offsetHeight * (movil ? 1.8 : 2.8))}`,
+        pin: true, scrub: movil ? 0.35 : 0.65, invalidateOnRefresh: true,
+      },
+      onUpdate: () => {
+        const tiempo = tl.time();
+        activarPaso(tiempo >= tl.labels.cierre ? 3 : tiempo >= tl.labels.paso2 ? 2 : tiempo >= tl.labels.paso1 ? 1 : 0);
+      },
+    });
 
-  tl.fromTo('.story-bar i', { scaleX: 0 }, { scaleX: 1, ease: 'none', duration: tl.duration() }, 0);
+    tl.addLabel('paso0', 0).addLabel('paso1', 1.9).addLabel('paso2', 3.8).addLabel('cierre', 5.7);
+    tl.to(palabras[0], { y: 0, opacity: 1, duration: 0.85, stagger: 0.06 }, 'paso0')
+      .fromTo(numeros[0], { scale: 0.94 }, { scale: 1, duration: 1.1 }, 'paso0');
+    [1, 2].forEach((i) => {
+      const inicio = `paso${i}`;
+      if (i === 2) tl.to(lineas[0], { y: recuerdo - 34, opacity: 0, duration: 0.5 }, inicio);
+      tl.to(lineas[i - 1], { y: recuerdo, scale: movil ? 0.7 : 0.74, opacity: 0.45, duration: 0.85 }, inicio)
+        .set(lineas[i], { opacity: 1 }, inicio)
+        .to(palabras[i], { y: 0, rotation: 0, opacity: 1, filter: 'blur(0px)', duration: 0.85, stagger: movil ? 0.045 : 0.065 }, inicio)
+        .to(numeros[i - 1], { yPercent: -45, scale: 0.86, rotationX: 35, opacity: 0, duration: 0.65 }, inicio)
+        .to(numeros[i], { yPercent: 0, scale: 1, rotationX: 0, opacity: 1, duration: 0.85 }, inicio)
+        .to(pasos[i - 1], { opacity: 0.58, scale: 0.97, y: 0, duration: 0.55 }, inicio)
+        .to(pasos[i], { opacity: 1, scale: 1.04, y: -3, duration: 0.65 }, inicio)
+        .to(brillo, { x: (i === 1 ? -1 : 1) * (movil ? 24 : 85), y: -i * 16, scale: 1 + i * 0.12, opacity: 0.7 + i * 0.1, duration: 1.25 }, inicio)
+        .to(halo, { x: i === 1 ? 30 : -45, y: i * 22, opacity: i === 1 ? 0.4 : 0.8, duration: 1.25 }, inicio);
+    });
+
+    tl.to(lineas.slice(0, 3), { y: recuerdo - 24, opacity: 0, duration: 0.45 }, 'cierre')
+      .set(lineas[3], { opacity: 1 }, 'cierre')
+      .to(palabras[3], { y: 0, rotation: 0, opacity: 1, filter: 'blur(0px)', duration: 0.75, stagger: 0.035 }, 'cierre')
+      .to(numeros[2], { scale: 0.86, opacity: 0.3, duration: 1 }, 'cierre')
+      .to(pasos, { opacity: 1, scale: 1, y: 0, duration: 0.8 }, 'cierre')
+      .to(frase, { opacity: 1, y: 0, scale: 1, duration: 1.15, ease: 'power4.out' }, 'cierre+=0.4')
+      .to(frase, { backgroundPosition: '0% 0', duration: 1.8, ease: 'sine.inOut' }, 'cierre+=0.5')
+      .to(brillo, { x: 0, y: 20, scale: movil ? 1.35 : 1.5, opacity: 1, duration: 1.5 }, 'cierre+=0.3')
+      .to(halo, { x: movil ? -25 : -100, y: 80, scale: 1.2, opacity: 1, duration: 1.5 }, 'cierre+=0.3')
+      .to({}, { duration: 0.7 });
+
+    const duracion = tl.duration();
+    tl.to(barra, { scaleX: 1, ease: 'none', duration: duracion }, 0)
+      .to(orbitas[0], { rotation: 18, y: movil ? -18 : -50, scale: 1.08, ease: 'none', duration: duracion }, 0)
+      .to(orbitas[1], { rotation: -24, y: movil ? 20 : 60, scale: 0.94, ease: 'none', duration: duracion }, 0);
+    // El margen vertical cubre toda la deriva; solo transformamos la foto.
+    if (foto) tl.fromTo(foto,
+      { yPercent: paralaje.inicio, scale: paralaje.escalaInicial },
+      { yPercent: paralaje.fin, scale: paralaje.escalaFinal, ease: 'none', duration: duracion }, 0);
+
+    // matchMedia revierte los estilos GSAP; restauramos también el texto y el flujo.
+    return () => {
+      historia.classList.remove('story-animada');
+      pasos.forEach((paso) => paso.classList.remove('on'));
+      lineas.forEach((linea, i) => { linea.innerHTML = originales[i]; });
+    };
+  }, historia);
 };
 // GSAP se carga con defer; esperamos a que esté listo.
 if (document.readyState === 'complete') animarHistoria();

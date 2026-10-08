@@ -175,22 +175,46 @@ section { padding: 110px 0; position: relative; }
 @keyframes slide { to { transform: translateX(-50%); } }
 
 /* ── Narrativa ── */
-.story { position: relative; display: grid; place-items: center; min-height: 100svh; padding: 110px 0; text-align: center; overflow: hidden; }
-.story p { font-size: clamp(28px, 4.2vw, 54px); font-weight: 800; letter-spacing: -.04em; line-height: 1.12; color: var(--ink); perspective: 700px; transform-origin: center; }
-.story p + p { margin-top: 14px; }
-.story .w { display: inline-block; transform-origin: 50% 100%; will-change: transform, opacity, filter; }
-.story .grad { display: inline-block; background-size: 220% 100%; background-position: 100% 0; }
-.story-steps { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
-.story-steps span { padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--ink3); transition: color .4s var(--ease), background .4s var(--ease), border-color .4s, box-shadow .4s; }
-.story-steps span.on { color: #fff; background: var(--grad-btn); border-color: transparent; box-shadow: 0 10px 24px -10px rgba(230, 57, 70, .8); }
-.story-bar { width: min(340px, 70%); height: 3px; margin: 44px auto 0; border-radius: 3px; background: rgba(255, 255, 255, .08); overflow: hidden; }
+.story { position: relative; display: grid; place-items: center; min-height: 100svh; padding: 96px 0; text-align: center; overflow: clip; isolation: isolate; }
+.story-foto { position: absolute; z-index: 0; top: -12%; left: 0; width: 100%; height: 124%; object-fit: cover; object-position: 45% 0%; pointer-events: none; }
+/* La capa oscura protege el texto y apaga los brillos sobre la foto. */
+.story::after { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(ellipse at center, rgba(6, 6, 6, .78) 0%, rgba(6, 6, 6, .68) 35%, rgba(6, 6, 6, .2) 72%, transparent 100%), radial-gradient(ellipse at center, transparent 42%, rgba(6, 6, 6, .75) 100%), linear-gradient(135deg, rgba(230, 57, 70, .12), rgba(6, 6, 6, .3) 50%, rgba(255, 107, 53, .1)), rgba(6, 6, 6, .3); }
+.story-inner { position: relative; z-index: 3; width: 100%; max-width: 1100px; }
+.story p { font-size: clamp(30px, 4.5vw, 62px); font-weight: 800; letter-spacing: -.045em; line-height: 1.18; color: var(--ink); transform-origin: center; text-wrap: balance; }
+.story p + p { margin-top: 22px; }
+.story .w { display: inline-block; transform-origin: 50% 100%; }
+.story .grad { display: block; max-width: 960px; margin-inline: auto; font-size: clamp(38px, 6vw, 82px); line-height: 1.14; background-size: 220% 100%; background-position: 100% 0; }
+.story-lead { display: block; margin-bottom: 18px; font-size: clamp(20px, 2.2vw, 30px); line-height: 1.4; letter-spacing: -.025em; color: var(--ink2); }
+.story-counter { display: flex; justify-content: center; gap: 24px; margin: 30px 0; font-size: clamp(64px, 10vw, 126px); font-weight: 800; letter-spacing: -.075em; line-height: 1; font-variant-numeric: tabular-nums; }
+.story-counter span { display: block; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.story-steps { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; }
+.story-steps span { position: relative; isolation: isolate; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--ink2); }
+.story-steps span::before { content: ''; position: absolute; inset: -1px; z-index: -1; border-radius: inherit; background: var(--grad-btn); opacity: 0; }
+.story-steps span.on::before { opacity: 1; }
+.story-bar { width: min(340px, 70%); height: 3px; margin: 32px auto 0; border-radius: 3px; background: rgba(255, 255, 255, .08); overflow: hidden; }
 .story-bar i { display: block; height: 100%; background: var(--grad); transform-origin: left; }
-.story-glow { position: absolute; left: 50%; top: 55%; width: 680px; height: 680px; translate: -50% -50%; border-radius: 50%; background: radial-gradient(circle, rgba(255, 107, 53, .32), rgba(230, 57, 70, .12) 40%, transparent 65%); filter: blur(30px); opacity: .5; pointer-events: none; }
+.story-glow, .story-halo { position: absolute; z-index: 1; left: 50%; top: 55%; width: min(780px, 120vw); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: radial-gradient(circle, rgba(255, 107, 53, .3), rgba(230, 57, 70, .12) 40%, transparent 68%); opacity: .6; pointer-events: none; }
+.story-halo { left: 64%; top: 38%; width: min(460px, 80vw); background: radial-gradient(circle, rgba(255, 210, 63, .14), transparent 65%); }
+.story-orbit { position: absolute; z-index: 1; left: 50%; top: 52%; width: min(1000px, 110vw); aspect-ratio: 1.5; translate: -50% -50%; rotate: -24deg; border: 1px solid rgba(255, 107, 53, .1); border-radius: 50%; pointer-events: none; }
+.story-orbit::after { content: ''; position: absolute; top: 50%; right: -3px; width: 5px; height: 5px; border-radius: 50%; background: var(--acento); box-shadow: 0 0 18px rgba(255, 107, 53, .65); }
+.story-orbit-dos { width: min(780px, 96vw); aspect-ratio: 1.2; rotate: 28deg; border-color: var(--line); }
+/* La superposición se activa desde JS: sin GSAP, toda la historia se lee en flujo. */
+.story-animada .story-counter { display: grid; }
+.story-animada .story-counter span { grid-area: 1 / 1; }
+.story-animada .story-lines { display: grid; align-items: center; min-height: clamp(260px, 32svh, 350px); }
+.story-animada .story-lines p { grid-area: 1 / 1; width: 100%; margin: 0; }
 @media (max-width: 640px) {
-  .story { padding: 90px 0; }
-  .story-steps { margin-bottom: 28px; }
-  .story-steps span { font-size: 11px; padding: 6px 11px; }
-  .story-glow { width: 420px; height: 420px; }
+  .story { padding: 88px 0 48px; }
+  .story-foto { top: -8%; object-position: 32% 0%; }
+  .story-inner { padding-inline: 20px; }
+  .story p { font-size: clamp(28px, 8.2vw, 42px); }
+  .story .grad { font-size: clamp(35px, 10.6vw, 54px); }
+  .story-lead { font-size: 20px; margin-bottom: 16px; }
+  .story-counter { font-size: clamp(64px, 21vw, 100px); gap: 12px; margin: 26px 0; }
+  .story-steps { gap: 5px; }
+  .story-steps span { font-size: 10px; padding: 7px 9px; white-space: nowrap; }
+  .story-animada .story-lines { min-height: 280px; }
+  .story-bar { margin-top: 24px; }
 }
 
 /* ── Pasos / bento ── */
@@ -641,4 +665,11 @@ section { padding: 110px 0; position: relative; }
   .hero .ctas .btn { flex: 1 1 100%; height: 50px; }
   .hero .ticks { justify-content: center; margin-top: 16px; gap: 6px 14px; font-size: 12.5px; }
   .hero .ticks li::before { width: 17px; height: 17px; font-size: 9px; }
+}
+
+/* Tarjeta "Sentadilla búlgara" bajo el teléfono de la sentadilla (izquierda) */
+.hero .fl-2 { right: auto; left: 8px; bottom: 26px; }
+.hero .fl-3 { left: auto; right: 0; bottom: 70px; }
+@media (max-width: 640px) {
+  .hero .fl-2 { left: 6px; right: auto; bottom: -16px; }
 }

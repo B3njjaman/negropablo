@@ -382,13 +382,20 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
 </div>
 
 <section class="story">
+  <img class="story-foto" src="assets/img/pablo-handball-salto.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
   <div class="story-glow" aria-hidden="true"></div>
-  <div class="wrap">
+  <div class="story-halo" aria-hidden="true"></div>
+  <div class="story-orbit story-orbit-uno" aria-hidden="true"></div>
+  <div class="story-orbit story-orbit-dos" aria-hidden="true"></div>
+  <div class="wrap story-inner">
     <div class="story-steps" aria-hidden="true"><span>01 · Evaluación</span><span>02 · Plan</span><span>03 · Progreso</span></div>
-    <p>Primero, te evalúo.</p>
-    <p>Después, diseño tu plan.</p>
-    <p>Semana a semana, progresas.</p>
-    <p>Porque no se trata de entrenar más, <span class="grad">se trata de entrenar mejor.</span></p>
+    <div class="story-counter" aria-hidden="true"><span>01</span><span>02</span><span>03</span></div>
+    <div class="story-lines">
+      <p>Primero, te evalúo.</p>
+      <p>Después, diseño tu plan.</p>
+      <p>Semana a semana, progresas.</p>
+      <p class="story-final"><span class="story-lead">Porque no se trata de entrenar más,</span> <span class="grad">se trata de entrenar mejor.</span></p>
+    </div>
     <div class="story-bar" aria-hidden="true"><i></i></div>
   </div>
 </section>
