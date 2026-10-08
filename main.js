@@ -83,143 +83,103 @@ document.querySelectorAll('.rev').forEach((el, i) => {
   revealer.observe(el);
 });
 
-// Historia: cada paso ocupa el centro y deja una breve huella antes del cierre.
-const partirEnPalabras = (p) => {
-  [...p.childNodes].forEach((nodo) => {
-    if (nodo.nodeType === Node.ELEMENT_NODE) {
-      // El degradado queda entero para envolver líneas sin cortar su luz.
-      if (!nodo.classList.contains('grad')) partirEnPalabras(nodo);
-      return;
-    }
-    if (nodo.nodeType !== Node.TEXT_NODE) return;
-    const trozos = nodo.textContent.split(/(\s+)/);
-    const frag = document.createDocumentFragment();
-    trozos.forEach((t) => {
-      if (!t) return;
-      if (/^\s+$/.test(t)) { frag.append(t); return; }
-      const w = document.createElement('span');
-      w.className = 'w';
-      w.textContent = t;
-      frag.append(w);
-    });
-    nodo.replaceWith(frag);
-  });
-};
-
-const animarHistoria = () => {
-  const historia = document.querySelector('.story');
-  if (!historia || !window.gsap || !window.ScrollTrigger) return;
+// Camino tipo Duolingo (GSAP + ScrollTrigger): la sección queda fija, el marcador
+// recorre la ruta, cada checkpoint se enciende con su frase y al final la meta
+// se abre como popup con Pablo. Sin GSAP o con movimiento reducido queda todo visible.
+const animarCamino = () => {
+  const camino = document.querySelector('.camino');
+  if (!camino || !window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
 
-  const lineas = [...historia.querySelectorAll('p')];
-  const originales = lineas.map((linea) => linea.innerHTML);
-  const pasos = [...historia.querySelectorAll('.story-steps span')];
-  const numeros = [...historia.querySelectorAll('.story-counter span')];
-  const foto = historia.querySelector('.story-foto');
-  const brillo = historia.querySelector('.story-glow');
-  const halo = historia.querySelector('.story-halo');
-  const orbitas = [...historia.querySelectorAll('.story-orbit')];
-  const barra = historia.querySelector('.story-bar i');
+  const mapa = camino.querySelector('.camino-mapa');
+  const ruta = camino.querySelector('.camino-trazo');
+  const yo = camino.querySelector('.camino-yo');
+  const nodos = [...camino.querySelectorAll('.camino-nodo')];
+  const burbujas = [...camino.querySelectorAll('.burbuja')];
+  const meta = camino.querySelector('.camino-meta');
+  const popup = camino.querySelector('.popup-in');
+  const velo = camino.querySelector('.camino-velo');
+  const fondo = camino.querySelector('.camino-fondo');
+  const largo = ruta.getTotalLength();
+
+  // Fracción de la ruta donde cae cada checkpoint (coordenadas del viewBox 400×800).
+  const fraccionEn = (x, y) => {
+    let mejor = 0;
+    let distancia = Infinity;
+    for (let i = 0; i <= 400; i++) {
+      const p = ruta.getPointAtLength((largo * i) / 400);
+      const d = (p.x - x) ** 2 + (p.y - y) ** 2;
+      if (d < distancia) { distancia = d; mejor = i / 400; }
+    }
+    return mejor;
+  };
+  const paradas = [...nodos, meta].map((n) => fraccionEn(Number(n.dataset.x), Number(n.dataset.y)));
+
+  const avance = { f: 0 };
+  const pintar = () => {
+    ruta.style.strokeDashoffset = String(1 - avance.f);
+    const p = ruta.getPointAtLength(largo * avance.f);
+    gsap.set(yo, { x: (p.x / 400) * mapa.clientWidth, y: (p.y / 800) * mapa.clientHeight, xPercent: -50, yPercent: -50 });
+  };
+
   const medios = gsap.matchMedia();
+  medios.add({ animar: '(prefers-reduced-motion: no-preference)', movil: '(max-width: 640px)' }, ({ conditions }) => {
+    if (!conditions.animar) return undefined;
+    camino.classList.add('camino-anim');
+    avance.f = 0;
 
-  medios.add({
-    escritorio: '(min-width: 641px)',
-    movil: '(max-width: 640px)',
-    sinMovimiento: '(prefers-reduced-motion: reduce)',
-    pocaAltura: '(max-height: 620px)',
-  }, (contexto) => {
-    const { movil, sinMovimiento, pocaAltura } = contexto.conditions;
-    // En pantallas bajas y con movimiento reducido se conserva el flujo normal.
-    if (sinMovimiento || pocaAltura) return;
-    historia.classList.add('story-animada');
-    lineas.forEach(partirEnPalabras);
-    const palabras = lineas.map((linea) => [...linea.querySelectorAll('.w')]);
-    const frase = historia.querySelector('.grad');
-    const recuerdo = movil ? -104 : -96;
-    const entrada = movil ? 22 : 38;
-    const paralaje = movil
-      ? { inicio: 0, fin: 5, escalaInicial: 1.02, escalaFinal: 1.04 }
-      : { inicio: -3, fin: 7, escalaInicial: 1.03, escalaFinal: 1.06 };
-    let pasoActual = -1;
-
-    const activarPaso = (indice) => {
-      if (indice === pasoActual) return;
-      pasos.forEach((paso, i) => paso.classList.toggle('on', indice === 3 || i === indice));
-      pasoActual = indice;
-    };
-
-    // Solo ocultamos contenido después de confirmar las dos librerías.
-    gsap.set(palabras[0], { y: 10, opacity: 0.78 });
-    gsap.set(lineas.slice(1), { opacity: 0 });
-    gsap.set(palabras.slice(1).flat(), { y: entrada, rotation: 3, opacity: 0, filter: `blur(${movil ? 2 : 5}px)` });
-    gsap.set(frase, { opacity: 0, y: entrada, scale: 0.96 });
-    gsap.set(numeros.slice(1), { opacity: 0, yPercent: 45, scale: 0.86, rotationX: -35 });
-    gsap.set(pasos, { opacity: 0.58, scale: 0.97 });
-    gsap.set(pasos[0], { opacity: 1, scale: 1 });
-    gsap.set(barra, { scaleX: 0 });
-    activarPaso(0);
+    gsap.set(burbujas, { autoAlpha: 0, y: 18, scale: 0.94 });
+    nodos.forEach((nodo) => {
+      gsap.set(nodo.querySelector('.fill'), { opacity: 0 });
+      gsap.set(nodo.querySelector('.ok'), { opacity: 0, scale: 0.4 });
+    });
+    gsap.set(meta, { opacity: 0.55, filter: 'grayscale(.75)' });
+    gsap.set(velo, { autoAlpha: 0 });
+    gsap.set(popup, { autoAlpha: 0, scale: 0.82, y: 40 });
+    pintar();
 
     const tl = gsap.timeline({
-      defaults: { ease: 'power3.out' },
+      defaults: { ease: 'power2.out' },
       scrollTrigger: {
-        trigger: historia, start: 'top top',
-        end: () => `+=${Math.round(historia.offsetHeight * (movil ? 1.8 : 2.8))}`,
-        pin: true, scrub: movil ? 0.35 : 0.65, invalidateOnRefresh: true,
-      },
-      onUpdate: () => {
-        const tiempo = tl.time();
-        activarPaso(tiempo >= tl.labels.cierre ? 3 : tiempo >= tl.labels.paso2 ? 2 : tiempo >= tl.labels.paso1 ? 1 : 0);
+        trigger: camino, start: 'top top', end: conditions.movil ? '+=300%' : '+=340%', pin: true, scrub: 0.8,
+        onRefresh: pintar,
       },
     });
 
-    tl.addLabel('paso0', 0).addLabel('paso1', 1.9).addLabel('paso2', 3.8).addLabel('cierre', 5.7);
-    tl.to(palabras[0], { y: 0, opacity: 1, duration: 0.85, stagger: 0.06 }, 'paso0')
-      .fromTo(numeros[0], { scale: 0.94 }, { scale: 1, duration: 1.1 }, 'paso0');
-    [1, 2].forEach((i) => {
-      const inicio = `paso${i}`;
-      if (i === 2) tl.to(lineas[0], { y: recuerdo - 34, opacity: 0, duration: 0.5 }, inicio);
-      tl.to(lineas[i - 1], { y: recuerdo, scale: movil ? 0.7 : 0.74, opacity: 0.45, duration: 0.85 }, inicio)
-        .set(lineas[i], { opacity: 1 }, inicio)
-        .to(palabras[i], { y: 0, rotation: 0, opacity: 1, filter: 'blur(0px)', duration: 0.85, stagger: movil ? 0.045 : 0.065 }, inicio)
-        .to(numeros[i - 1], { yPercent: -45, scale: 0.86, rotationX: 35, opacity: 0, duration: 0.65 }, inicio)
-        .to(numeros[i], { yPercent: 0, scale: 1, rotationX: 0, opacity: 1, duration: 0.85 }, inicio)
-        .to(pasos[i - 1], { opacity: 0.58, scale: 0.97, y: 0, duration: 0.55 }, inicio)
-        .to(pasos[i], { opacity: 1, scale: 1.04, y: -3, duration: 0.65 }, inicio)
-        .to(brillo, { x: (i === 1 ? -1 : 1) * (movil ? 24 : 85), y: -i * 16, scale: 1 + i * 0.12, opacity: 0.7 + i * 0.1, duration: 1.25 }, inicio)
-        .to(halo, { x: i === 1 ? 30 : -45, y: i * 22, opacity: i === 1 ? 0.4 : 0.8, duration: 1.25 }, inicio);
+    let desde = 0;
+    nodos.forEach((nodo, i) => {
+      const bola = nodo.querySelector('.bola');
+      if (i > 0) tl.to(burbujas[i - 1], { autoAlpha: 0.35, scale: 0.97, duration: 0.3 });
+      tl.to(avance, { f: paradas[i], duration: (paradas[i] - desde) * 5, ease: 'none', onUpdate: pintar }, i > 0 ? '<' : '>')
+        .to(bola, { scale: 1.22, duration: 0.2 })
+        .to(nodo.querySelector('.fill'), { opacity: 1, duration: 0.2 }, '<')
+        .to(nodo.querySelector('.n'), { opacity: 0, duration: 0.15 }, '<')
+        .to(nodo.querySelector('.ok'), { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(3)' }, '<0.05')
+        .to(bola, { scale: 1, duration: 0.35, ease: 'back.out(3)' })
+        .to(burbujas[i], { autoAlpha: 1, y: 0, scale: 1, duration: 0.45, ease: 'back.out(1.7)' }, '<')
+        .to({}, { duration: 0.6 });
+      desde = paradas[i];
     });
 
-    tl.to(lineas.slice(0, 3), { y: recuerdo - 24, opacity: 0, duration: 0.45 }, 'cierre')
-      .set(lineas[3], { opacity: 1 }, 'cierre')
-      .to(palabras[3], { y: 0, rotation: 0, opacity: 1, filter: 'blur(0px)', duration: 0.75, stagger: 0.035 }, 'cierre')
-      .to(numeros[2], { scale: 0.86, opacity: 0.3, duration: 1 }, 'cierre')
-      .to(pasos, { opacity: 1, scale: 1, y: 0, duration: 0.8 }, 'cierre')
-      .to(frase, { opacity: 1, y: 0, scale: 1, duration: 1.15, ease: 'power4.out' }, 'cierre+=0.4')
-      .to(frase, { backgroundPosition: '0% 0', duration: 1.8, ease: 'sine.inOut' }, 'cierre+=0.5')
-      .to(brillo, { x: 0, y: 20, scale: movil ? 1.35 : 1.5, opacity: 1, duration: 1.5 }, 'cierre+=0.3')
-      .to(halo, { x: movil ? -25 : -100, y: 80, scale: 1.2, opacity: 1, duration: 1.5 }, 'cierre+=0.3')
-      .to({}, { duration: 0.7 });
+    tl.to(burbujas[burbujas.length - 1], { autoAlpha: 0.35, scale: 0.97, duration: 0.3 })
+      .to(avance, { f: 1, duration: (1 - desde) * 5, ease: 'none', onUpdate: pintar }, '<')
+      .to(meta, { opacity: 1, filter: 'grayscale(0)', scale: 1.18, duration: 0.4 }, '-=0.2')
+      .to(velo, { autoAlpha: 1, duration: 0.35 })
+      .to(popup, { autoAlpha: 1, scale: 1, y: 0, duration: 0.6, ease: 'back.out(1.6)' }, '<')
+      .to({}, { duration: 0.9 });
 
-    const duracion = tl.duration();
-    tl.to(barra, { scaleX: 1, ease: 'none', duration: duracion }, 0)
-      .to(orbitas[0], { rotation: 18, y: movil ? -18 : -50, scale: 1.08, ease: 'none', duration: duracion }, 0)
-      .to(orbitas[1], { rotation: -24, y: movil ? 20 : 60, scale: 0.94, ease: 'none', duration: duracion }, 0);
-    // El margen vertical cubre toda la deriva; solo transformamos la foto.
-    if (foto) tl.fromTo(foto,
-      { yPercent: paralaje.inicio, scale: paralaje.escalaInicial },
-      { yPercent: paralaje.fin, scale: paralaje.escalaFinal, ease: 'none', duration: duracion }, 0);
+    // La meta de fondo baja suave con el scroll (parallax).
+    tl.fromTo(fondo, { yPercent: -5, scale: 1.06 }, { yPercent: 5, scale: 1.12, ease: 'none', duration: tl.duration() }, 0);
 
-    // matchMedia revierte los estilos GSAP; restauramos también el texto y el flujo.
     return () => {
-      historia.classList.remove('story-animada');
-      pasos.forEach((paso) => paso.classList.remove('on'));
-      lineas.forEach((linea, i) => { linea.innerHTML = originales[i]; });
+      camino.classList.remove('camino-anim');
+      ruta.style.strokeDashoffset = '';
     };
-  }, historia);
+  });
 };
 // GSAP se carga con defer; esperamos a que esté listo.
-if (document.readyState === 'complete') animarHistoria();
-else window.addEventListener('load', animarHistoria);
+if (document.readyState === 'complete') animarCamino();
+else window.addEventListener('load', animarCamino);
 
 // Contadores
 const counter = new IntersectionObserver(

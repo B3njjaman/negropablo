@@ -381,36 +381,48 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
   </div>
 </div>
 
-<section class="story">
-  <img class="story-foto" src="assets/img/pablo-handball-salto.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
-  <div class="story-glow" aria-hidden="true"></div>
-  <div class="story-halo" aria-hidden="true"></div>
-  <div class="story-orbit story-orbit-uno" aria-hidden="true"></div>
-  <div class="story-orbit story-orbit-dos" aria-hidden="true"></div>
-  <div class="wrap story-inner">
-    <div class="story-steps" aria-hidden="true"><span>01 · Evaluación</span><span>02 · Plan</span><span>03 · Progreso</span></div>
-    <div class="story-counter" aria-hidden="true"><span>01</span><span>02</span><span>03</span></div>
-    <div class="story-lines">
-      <p>Primero, te evalúo.</p>
-      <p>Después, diseño tu plan.</p>
-      <p>Semana a semana, progresas.</p>
-      <p class="story-final"><span class="story-lead">Porque no se trata de entrenar más,</span> <span class="grad">se trata de entrenar mejor.</span></p>
+<section class="camino" aria-label="Tu camino con Pablo">
+  <img class="camino-fondo" src="assets/img/pablo-handball-celebra.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
+  <div class="wrap camino-inner">
+    <div class="camino-head">
+      <span class="eyebrow">Cómo funciona</span>
+      <h2>Un proceso con <span class="grad">propósito</span></h2>
+      <p class="sub">Un buen entrenamiento no es solo hacer ejercicio: tiene un objetivo y está adaptado a la persona que tengo delante.</p>
     </div>
-    <div class="story-bar" aria-hidden="true"><i></i></div>
+    <div class="camino-mapa">
+      <svg class="camino-svg" viewBox="0 0 400 800" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="caminoGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e63946"/><stop offset=".55" stop-color="#ff6b35"/><stop offset="1" stop-color="#ffd23f"/></linearGradient></defs>
+        <path class="camino-base" d="M200 770 C 200 700, 110 690, 110 600 C 110 510, 290 520, 290 430 C 290 340, 110 350, 110 260 C 110 180, 200 175, 200 95"/>
+        <path class="camino-trazo" d="M200 770 C 200 700, 110 690, 110 600 C 110 510, 290 520, 290 430 C 290 340, 110 350, 110 260 C 110 180, 200 175, 200 95" pathLength="1"/>
+      </svg>
+      <div class="camino-inicio" style="left:50%;top:96.25%"><span>Hoy</span></div>
+      <div class="camino-nodo" data-x="110" data-y="600" style="left:27.5%;top:75.0%"><span class="bola"><i class="fill"></i><span class="n">01</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
+      <div class="camino-card der" style="top:75.0%"><div class="burbuja"><small>01 · Evaluación</small><b>Primero, te evalúo.</b><span>Tus objetivos, condición física, experiencia y disponibilidad.</span></div></div>
+      <div class="camino-nodo" data-x="290" data-y="430" style="left:72.5%;top:53.75%"><span class="bola"><i class="fill"></i><span class="n">02</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
+      <div class="camino-card izq" style="top:53.75%"><div class="burbuja"><small>02 · Plan</small><b>Después, diseño tu plan.</b><span>Entrenamientos progresivos y personalizados, pensados para ti.</span></div></div>
+      <div class="camino-nodo" data-x="110" data-y="260" style="left:27.5%;top:32.5%"><span class="bola"><i class="fill"></i><span class="n">03</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
+      <div class="camino-card der" style="top:32.5%"><div class="burbuja"><small>03 · Progreso</small><b>Semana a semana, progresas.</b><span>Revisamos técnica y avance, y ajustamos para que sigas progresando.</span></div></div>
+      <div class="camino-meta" data-x="200" data-y="95" style="left:50%;top:11.875%"><span class="aro"><img src="assets/img/pablo-handball-salto.jpg" alt="" loading="lazy"></span><span class="etq">Meta</span></div>
+      <div class="camino-yo" aria-hidden="true"><span>Tú</span></div>
+    </div>
+  </div>
+  <div class="camino-velo" aria-hidden="true"></div>
+  <div class="camino-popup">
+    <div class="popup-in">
+      <img src="assets/img/pablo-handball-salto.jpg" alt="Pablo Meza jugando handball">
+      <div class="popup-txt">
+        <span class="badge"><i></i>¡Llegaste a la meta!</span>
+        <p>Porque no se trata de entrenar más, <span class="grad">se trata de entrenar mejor.</span></p>
+        <span class="firma">— Pablo Meza</span>
+        <a class="btn btn-p btn-w" data-wa="Hola Pablo! Quiero empezar mi camino contigo">Empezar mi camino {ARROW}</a>
+      </div>
+    </div>
   </div>
 </section>
 {bloque_historias("historias-inicio", "Clientes y entrenamiento", 'Así se entrena <span class="grad">con Pablo.</span>', "Míralo como historias de Instagram: toca a la derecha para avanzar y mantén presionado para pausar.", f'<a class="btn btn-g rev" href="clientes.html" style="margin-top:24px">Ver todos los videos {ARROW}</a>')}
 <section style="padding-top:20px">
   <div class="wrap">
-    <div class="head center">
-      <span class="eyebrow rev">Cómo funciona</span>
-      <h2 class="rev">Un proceso con <span class="grad">propósito</span></h2>
-      <p class="sub rev">Un buen entrenamiento no es solo hacer ejercicio: tiene un objetivo y está adaptado a la persona que tengo delante.</p>
-    </div>
     <div class="bento">
-      <article class="card b-2 rev"><span class="num">01</span><h3>Evaluación</h3><p>Tus objetivos, condición física, experiencia y disponibilidad.</p></article>
-      <article class="card b-2 rev"><span class="num">02</span><h3>Planificación</h3><p>Entrenamientos progresivos y personalizados, pensados para ti.</p></article>
-      <article class="card b-2 rev"><span class="num">03</span><h3>Seguimiento</h3><p>Revisamos técnica y avance, y ajustamos para que sigas progresando.</p></article>
       <article class="card b-4 rev">
         <div class="b-media">
           <div>
