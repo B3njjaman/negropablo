@@ -243,6 +243,11 @@ document.querySelectorAll('.vfilter[data-row]').forEach((group) => {
   );
 });
 
+// Precios "desde" de los planes compactos de la portada (2 veces por semana, mensual).
+document.querySelectorAll('[data-desde]').forEach((el) => {
+  el.textContent = clp(PRECIOS[el.dataset.desde][2]);
+});
+
 // Planes: veces por semana × período de pago
 const detallePlan = (plan, veces) => {
   const sesiones = veces * 4;

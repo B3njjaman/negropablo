@@ -414,54 +414,31 @@ INDEX = head("PabloCoach · Entrenador personal y preparador físico", "Pablo Me
         <span class="badge"><i></i>¡Llegaste a la meta!</span>
         <p>Porque no se trata de entrenar más, <span class="grad">se trata de entrenar mejor.</span></p>
         <span class="firma">— Pablo Meza</span>
+        <p class="cred">Profesor de Estado USACH · Selección universitaria y procesos de selección nacional · <a href="sobre-mi.html">Conoce a Pablo</a></p>
         <a class="btn btn-p btn-w" data-wa="Hola Pablo! Quiero empezar mi camino contigo">Empezar mi camino {ARROW}</a>
       </div>
     </div>
   </div>
 </section>
 {bloque_historias("historias-inicio", "Clientes y entrenamiento", 'Así se entrena <span class="grad">con Pablo.</span>', "Míralo como historias de Instagram: toca a la derecha para avanzar.", f'<a class="btn btn-g rev" href="clientes.html" style="margin-top:24px">Ver todos los videos {ARROW}</a>')}
-<section style="padding-top:20px">
-  <div class="wrap">
-    <div class="bento">
-      <article class="card b-4 rev">
-        <div class="b-media">
-          <div>
-            <span class="num">RESPALDO</span>
-            <h3>Formación y alto rendimiento</h3>
-            <p>Profesor de Estado de Educación Física titulado en la USACH, con años como deportista de selección y entrenador de handball.</p>
-            <div class="stats">
-              <div class="stat"><b>USACH</b><span>Profesor de Estado</span></div>
-              <div class="stat stat-txt"><b>Selección universitaria</b><span>y procesos de selección nacional</span></div>
-            </div>
-          </div>
-          <video src="assets/video/evaluacion-vo2.mp4" poster="assets/img/evaluacion-vo2.jpg" muted loop playsinline preload="none" data-auto></video>
-        </div>
-      </article>
-      <article class="card b-2 rev" style="display:flex;flex-direction:column;justify-content:space-between;gap:24px">
-        <div>
-          <span class="num">TRAYECTORIA</span>
-          <h3>Conoce a Pablo</h3>
-          <p>Campeón nacional, competencias internacionales y años formando deportistas.</p>
-        </div>
-        <a class="btn btn-g btn-s" href="sobre-mi.html" style="align-self:flex-start">Sobre mí {ARROW}</a>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section style="padding-top:20px">
+<section class="mini-sec">
   <div class="wrap">
     <div class="head center">
       <span class="eyebrow rev">Planes</span>
-      <h2 class="rev">Elige el plan que más <span class="grad">te acomoda</span></h2>
-      <p class="sub rev">Planes mensuales, trimestrales y semestrales para entrenar 2 o 3 veces por semana. <span class="highlight">Cuanto más largo el plan, mejores resultados y mayor sostenibilidad.</span></p>
+      <h2 class="rev">Elige cómo <span class="grad">empezar</span></h2>
+      <p class="sub rev">Mensual, trimestral o semestral, 2 o 3 veces por semana. <span class="highlight">Cuanto más largo el plan, mejores resultados y mayor sostenibilidad.</span></p>
     </div>
-{PLANS}
-{ASSIST}
-    <p class="note rev"><a href="planes.html" style="color:var(--acento);font-weight:700">Ver detalle y preguntas frecuentes →</a></p>
+    <div class="mini-planes">
+      <a class="mini card rev" href="planes.html"><b>Online</b><span>Rutina y seguimiento a distancia</span><em>desde <strong data-desde="online"></strong> /mes</em></a>
+      <a class="mini card hot rev" href="planes.html"><small class="flag">Más elegido</small><b>Híbrido</b><span>2 presenciales al mes + online</span><em>desde <strong data-desde="hibrido"></strong> /mes</em></a>
+      <a class="mini card rev" href="planes.html"><b>Presencial 1:1</b><span>Todas las sesiones conmigo</span><em>desde <strong data-desde="presencial"></strong> /mes</em></a>
+    </div>
+    <div class="ctas mini-ctas rev">
+      <a class="btn btn-p" href="planes.html">Ver planes y precios {ARROW}</a>
+      <button class="btn btn-g" data-chat-open>¿Qué plan es para mí?</button>
+    </div>
   </div>
 </section>
-{cta('Tu mejor versión <span style="opacity:.75">parte con un mensaje.</span>', 'Escríbeme, cuéntame tu objetivo y armamos tu plan esta misma semana.')}
 </main>
 ''' + FOOT.replace('<script src="main.js', GSAP + '<script src="main.js', 1)
 

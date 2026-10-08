@@ -745,3 +745,41 @@ section { padding: 110px 0; position: relative; }
   .planes { padding-inline: 8vw; scroll-padding-inline: 0; }
   .planes .plan { flex: 0 0 84vw; scroll-snap-align: center; }
 }
+
+/* Planes compactos de la portada */
+.mini-planes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mini { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 26px; transition: transform .3s var(--ease), border-color .3s; }
+.mini:hover { transform: translateY(-3px); }
+.mini b { font-size: 21px; letter-spacing: -.02em; }
+.mini span { font-size: 14.5px; color: var(--ink2); }
+.mini em { margin-top: 10px; font-style: normal; font-size: 14px; color: var(--ink3); }
+.mini em strong { font-size: 26px; font-weight: 800; letter-spacing: -.03em; color: var(--ink); }
+.mini.hot { border: 1.5px solid rgba(255, 107, 53, .6); }
+.mini .flag { left: 22px; }
+.mini-ctas { justify-content: center; margin-top: 28px; }
+.cred { margin: -6px 0 18px; font-size: 12.5px; line-height: 1.5; color: var(--ink3); }
+.cred a { color: var(--acento); font-weight: 700; }
+@media (max-width: 640px) {
+  .mini-planes { grid-template-columns: 1fr; gap: 12px; }
+  .mini { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; row-gap: 2px; align-items: center; padding: 18px 18px; }
+  .mini b { font-size: 18px; }
+  .mini span { grid-column: 1; font-size: 13px; }
+  .mini em { grid-column: 2; grid-row: 1 / span 2; margin: 0; text-align: right; font-size: 12px; line-height: 1.2; }
+  .mini em strong { display: block; font-size: 21px; }
+  .mini.hot { margin-top: 8px; }
+  .mini-ctas .btn { flex: 1 1 100%; }
+  /* Meta más compacta */
+  .popup-in > img { aspect-ratio: 2 / 1; }
+  .popup-txt { padding: 18px 20px 20px; }
+  /* Footer compacto */
+  .foot { padding: 44px 0 28px; margin-top: 10px; }
+  .foot-grid { grid-template-columns: repeat(3, 1fr); gap: 22px 14px; }
+  .foot-grid > div:first-child { grid-column: 1 / -1; }
+  .foot-grid > div:first-child p { display: none; }
+  .foot h4 { font-size: 11px; margin-bottom: 10px; }
+  .foot ul { font-size: 13.5px; gap: 7px; }
+  .foot-bot { margin-top: 28px; padding-top: 18px; flex-direction: column; gap: 6px; font-size: 12px; }
+  .logo-foot img { width: 140px; }
+  /* Historias un poco más bajas */
+  .st-phone { height: min(70svh, 600px); }
+}
