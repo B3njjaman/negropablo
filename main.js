@@ -83,15 +83,63 @@ document.querySelectorAll('.rev').forEach((el, i) => {
   revealer.observe(el);
 });
 
-// Narrativa: cada línea se "enciende" al llegar al centro
-const storyLines = document.querySelectorAll('.story p');
-if (storyLines.length) {
-  const lighter = new IntersectionObserver(
-    (entries) => entries.forEach((e) => e.target.classList.toggle('lit', e.isIntersecting)),
-    { rootMargin: '-35% 0px -35% 0px' }
-  );
-  storyLines.forEach((p) => lighter.observe(p));
-}
+// Historia de la portada (GSAP + ScrollTrigger): la sección queda fija y cada
+// frase entra palabra por palabra mientras se hace scroll.
+const partirEnPalabras = (p) => {
+  [...p.childNodes].forEach((nodo) => {
+    if (nodo.nodeType === Node.ELEMENT_NODE) { nodo.classList.add('w'); return; }
+    const trozos = nodo.textContent.split(/(\s+)/);
+    const frag = document.createDocumentFragment();
+    trozos.forEach((t) => {
+      if (!t) return;
+      if (/^\s+$/.test(t)) { frag.append(' '); return; }
+      const w = document.createElement('span');
+      w.className = 'w';
+      w.textContent = t;
+      frag.append(w);
+    });
+    nodo.replaceWith(frag);
+  });
+};
+
+const animarHistoria = () => {
+  const historia = document.querySelector('.story');
+  const sinMovimiento = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!historia || !window.gsap || !window.ScrollTrigger || sinMovimiento) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const lineas = [...historia.querySelectorAll('p')];
+  lineas.forEach(partirEnPalabras);
+  const pasos = [...historia.querySelectorAll('.story-steps span')];
+  const frase = historia.querySelector('.grad');
+
+  gsap.set(historia.querySelectorAll('.w'), { opacity: 0.06, yPercent: 70, rotateX: -75, filter: 'blur(10px)' });
+  gsap.set('.story-bar i', { scaleX: 0 });
+
+  const tl = gsap.timeline({
+    defaults: { ease: 'power3.out' },
+    scrollTrigger: { trigger: historia, start: 'top top', end: '+=260%', pin: true, scrub: 0.8 },
+    onUpdate: () => pasos.forEach((paso, i) => paso.classList.toggle('on', tl.time() >= tl.labels[`l${i}`] + 0.3)),
+  });
+
+  lineas.forEach((linea, i) => {
+    tl.addLabel(`l${i}`);
+    if (i > 0) tl.to(lineas[i - 1], { opacity: 0.28, scale: 0.97, duration: 0.6 }, `l${i}`);
+    tl.to(linea.querySelectorAll('.w'), {
+      opacity: 1, yPercent: 0, rotateX: 0, filter: 'blur(0px)', duration: 0.8, stagger: 0.07,
+    }, `l${i}`);
+  });
+
+  tl.fromTo(frase, { scale: 0.88 }, { scale: 1, duration: 0.9, ease: 'back.out(2)' }, '-=0.5')
+    .to(frase, { backgroundPosition: '0% 0', duration: 1.1, ease: 'none' }, '<')
+    .to('.story-glow', { opacity: 1, scale: 1.25, duration: 1.1 }, '<')
+    .to({}, { duration: 0.6 });
+
+  tl.fromTo('.story-bar i', { scaleX: 0 }, { scaleX: 1, ease: 'none', duration: tl.duration() }, 0);
+};
+// GSAP se carga con defer; esperamos a que esté listo.
+if (document.readyState === 'complete') animarHistoria();
+else window.addEventListener('load', animarHistoria);
 
 // Contadores
 const counter = new IntersectionObserver(

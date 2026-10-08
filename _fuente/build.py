@@ -37,6 +37,11 @@ ARROW = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width
 PLAY = '<svg viewBox="0 0 12 14"><path fill="currentColor" d="M0 0l12 7-12 7z"/></svg>'
 
 
+# GSAP + ScrollTrigger (solo la portada los usa, para la historia animada).
+GSAP = ('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>\n'
+        '<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>\n')
+
+
 def head(title, desc, og="assets/img/pablo-handball-salto.jpg"):
     return f'''<!doctype html>
 <html lang="es">
@@ -150,35 +155,32 @@ FOOT = f'''
 
 # ───────────────── Historias: clientes y entrenamiento ─────────────────
 HISTORIAS = [
-    dict(tipo="video", src="evaluacion-vo2", dur=6000, ante="Paso 1 · Evaluación",
-         titulo="Medimos antes de entrenar",
-         texto="Test de esfuerzo con análisis de gases (VO₂ máx): sabemos desde dónde partes y a qué intensidad entrenar.",
-         cap="Todo parte con una evaluación"),
-    dict(tipo="video", src="c-curl-bayesiano", dur=7000, ante="Paso 2 · Técnica",
-         titulo="Cada repetición, revisada",
-         texto="Curl bayesiano en polea: el brazo atrás estira el bíceps y lo trabaja en todo su rango.",
-         cap="Técnica corregida en cada serie"),
-    dict(tipo="video", src="c-bulgara", dur=7000, ante="En el gimnasio",
-         titulo="Fuerza que se nota",
-         texto="Sentadilla búlgara con mancuerna: pierna, glúteo y equilibrio en un solo ejercicio.",
-         cap="Fuerza en el gimnasio"),
+    # Solo videos de clientes (carpeta Fotos_Pagina/Estudiantesclientes).
     dict(tipo="video", src="c-domicilio", dur=9000, ante="A domicilio",
          titulo="Entrenamos donde estés",
          texto="En tu casa, en el jardín o al aire libre: con colchonetas, mancuernas y bosu llevamos el gimnasio a ti.",
          cap="Entrenamiento a domicilio"),
+    dict(tipo="video", src="c-bulgara", dur=7000, ante="En el gimnasio",
+         titulo="Fuerza que se nota",
+         texto="Sentadilla búlgara con mancuerna: pierna, glúteo y equilibrio en un solo ejercicio.",
+         cap="Fuerza en el gimnasio"),
     dict(tipo="video", src="c-adulto-mayor", dur=9000, ante="Adulto mayor",
          titulo="Para todas las edades",
          texto="Fuerza, equilibrio y movilidad adaptados a cada etapa de la vida, para moverse mejor día a día.",
          cap="Adultos mayores activos"),
+    dict(tipo="video", src="c-fondos-asistidos", dur=8000, ante="Progresión",
+         titulo="Paso a paso",
+         texto="Fondos asistidos: hoy la máquina te ayuda, en unas semanas los haces libres.",
+         cap="Progresión semana a semana"),
     dict(tipo="video", src="c-core-pareja", dur=8000, ante="En pareja o grupo",
          titulo="Mejor acompañado",
          texto="Circuitos de core en pareja: más motivación y el mismo cuidado de la técnica.",
          cap="Entrenamiento en pareja"),
-    dict(tipo="video", src="handball-corto", dur=8000, ante="Experiencia",
-         titulo="Del alto rendimiento a tu plan",
-         texto="Años de handball competitivo y preparación física detrás de cada planificación.",
-         cap="Método probado en competencia"),
-    dict(tipo="img", src="pablo-handball-salto", dur=6000, ante="Pablo Meza",
+    dict(tipo="video", src="c-balon-medicinal", dur=7000, ante="Potencia y coordinación",
+         titulo="Moverse mejor",
+         texto="Pases con balón medicinal: potencia, coordinación y reacción, sin importar la edad.",
+         cap="Funcional para todos"),
+    dict(tipo="video", src="c-press-piso", dur=7000, ante="Tu turno",
          titulo="¿Entrenamos?",
          texto="Cuéntame tu objetivo y armamos tu plan esta semana.",
          cap="Tu turno", boton=True),
@@ -347,16 +349,10 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
   <div class="wrap hero-grid">
     <div>
       <h1 class="in-2">Entrena con<br><span class="grad">propósito.</span><br>Avanza de verdad.</h1>
-      <p class="sub in-3">Entrenamiento personalizado y preparación física con Pablo Meza, ex seleccionado nacional de handball. Para todas las edades, en el gimnasio, en tu casa o al aire libre.</p>
       <div class="ctas in-4">
         <a class="btn btn-p" data-wa="Hola Pablo! Quiero empezar a entrenar contigo">Empezar ahora {ARROW}</a>
         <button class="btn btn-g" data-chat-open>¿Qué plan es para mí?</button>
       </div>
-      <ul class="ticks in-5">
-        <li>Gimnasio, domicilio u online</li>
-        <li>2 o 3 veces por semana</li>
-        <li>Desde $59.000 al mes</li>
-      </ul>
     </div>
 
     <div class="stage in-3" aria-hidden="true">
@@ -386,11 +382,14 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
 </div>
 
 <section class="story">
+  <div class="story-glow" aria-hidden="true"></div>
   <div class="wrap">
+    <div class="story-steps" aria-hidden="true"><span>01 · Evaluación</span><span>02 · Plan</span><span>03 · Progreso</span></div>
     <p>Primero, te evalúo.</p>
     <p>Después, diseño tu plan.</p>
     <p>Semana a semana, progresas.</p>
     <p>Porque no se trata de entrenar más, <span class="grad">se trata de entrenar mejor.</span></p>
+    <div class="story-bar" aria-hidden="true"><i></i></div>
   </div>
 </section>
 {bloque_historias("historias-inicio", "Clientes y entrenamiento", 'Así se entrena <span class="grad">con Pablo.</span>', "Míralo como historias de Instagram: toca a la derecha para avanzar y mantén presionado para pausar.", f'<a class="btn btn-g rev" href="clientes.html" style="margin-top:24px">Ver todos los videos {ARROW}</a>')}
@@ -445,7 +444,7 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
 </section>
 {cta('Tu mejor versión <span style="opacity:.75">parte con un mensaje.</span>', 'Escríbeme, cuéntame tu objetivo y armamos tu plan esta misma semana.')}
 </main>
-''' + FOOT
+''' + FOOT.replace('<script src="main.js', GSAP + '<script src="main.js', 1)
 
 # ═════════════════════════ SOBRE MÍ ═════════════════════════
 GOALS = [
