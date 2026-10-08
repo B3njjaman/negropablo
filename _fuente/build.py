@@ -37,11 +37,6 @@ ARROW = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width
 PLAY = '<svg viewBox="0 0 12 14"><path fill="currentColor" d="M0 0l12 7-12 7z"/></svg>'
 
 
-# GSAP + ScrollTrigger (solo la portada los usa, para la historia animada).
-GSAP = ('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>\n'
-        '<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>\n')
-
-
 def head(title, desc, og="assets/img/pablo-handball-salto.jpg"):
     return f'''<!doctype html>
 <html lang="es">
@@ -381,7 +376,7 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
   </div>
 </div>
 
-<section class="camino" aria-label="Tu camino con Pablo">
+<section class="camino camino-fijo" aria-label="Tu camino con Pablo">
   <img class="camino-fondo" src="assets/img/pablo-handball-celebra.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
   <div class="wrap camino-inner">
     <div class="camino-head">
@@ -397,21 +392,19 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
       </svg>
       <div class="camino-inicio" style="left:50%;top:96.25%"><span>Hoy</span></div>
       <div class="camino-nodo" data-x="110" data-y="600" style="left:27.5%;top:75.0%"><span class="bola"><i class="fill"></i><span class="n">01</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
-      <div class="camino-card der" style="top:75.0%"><div class="burbuja"><small>01 · Evaluación</small><b>Primero, te evalúo.</b><span>Tus objetivos, condición física, experiencia y disponibilidad.</span></div></div>
+      <div class="camino-card der" style="top:75.0%"><div class="burbuja rev"><small>01 · Evaluación</small><b>Primero, te evalúo.</b><span>Tus objetivos, condición física, experiencia y disponibilidad.</span></div></div>
       <div class="camino-nodo" data-x="290" data-y="430" style="left:72.5%;top:53.75%"><span class="bola"><i class="fill"></i><span class="n">02</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
-      <div class="camino-card izq" style="top:53.75%"><div class="burbuja"><small>02 · Plan</small><b>Después, diseño tu plan.</b><span>Entrenamientos progresivos y personalizados, pensados para ti.</span></div></div>
+      <div class="camino-card izq" style="top:53.75%"><div class="burbuja rev"><small>02 · Plan</small><b>Después, diseño tu plan.</b><span>Entrenamientos progresivos y personalizados, pensados para ti.</span></div></div>
       <div class="camino-nodo" data-x="110" data-y="260" style="left:27.5%;top:32.5%"><span class="bola"><i class="fill"></i><span class="n">03</span><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></div>
-      <div class="camino-card der" style="top:32.5%"><div class="burbuja"><small>03 · Progreso</small><b>Semana a semana, progresas.</b><span>Revisamos técnica y avance, y ajustamos para que sigas progresando.</span></div></div>
+      <div class="camino-card der" style="top:32.5%"><div class="burbuja rev"><small>03 · Progreso</small><b>Semana a semana, progresas.</b><span>Revisamos técnica y avance, y ajustamos para que sigas progresando.</span></div></div>
       <div class="camino-meta" data-x="200" data-y="95" style="left:50%;top:11.875%"><span class="aro"><img src="assets/img/pablo-handball-salto.jpg" alt="" loading="lazy"></span><span class="etq">Meta</span></div>
-      <div class="camino-yo" aria-hidden="true"><span>Tú</span></div>
     </div>
   </div>
-  <div class="camino-velo" aria-hidden="true"></div>
   <div class="camino-popup">
-    <div class="popup-in">
+    <div class="popup-in rev">
       <img src="assets/img/pablo-handball-salto.jpg" alt="Pablo Meza jugando handball">
       <div class="popup-txt">
-        <span class="badge"><i></i>¡Llegaste a la meta!</span>
+        <span class="badge"><i></i>La meta</span>
         <p>Porque no se trata de entrenar más, <span class="grad">se trata de entrenar mejor.</span></p>
         <span class="firma">— Pablo Meza</span>
         <a class="btn btn-p btn-w" data-wa="Hola Pablo! Quiero empezar mi camino contigo">Empezar mi camino {ARROW}</a>
@@ -463,7 +456,7 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
 </section>
 {cta('Tu mejor versión <span style="opacity:.75">parte con un mensaje.</span>', 'Escríbeme, cuéntame tu objetivo y armamos tu plan esta misma semana.')}
 </main>
-''' + FOOT.replace('<script src="main.js', GSAP + '<script src="main.js', 1)
+''' + FOOT
 
 # ═════════════════════════ SOBRE MÍ ═════════════════════════
 GOALS = [
