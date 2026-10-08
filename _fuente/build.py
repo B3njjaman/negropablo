@@ -362,7 +362,7 @@ INDEX = head("Negro Pablo · Entrenador personal y preparador físico", "Pablo M
     <div class="stage in-3" aria-hidden="true">
       <div class="phone ph-back"><video src="assets/video/c-bulgara.mp4" poster="assets/img/c-bulgara.jpg" muted loop playsinline preload="none" data-auto></video></div>
       <div class="phone ph-3"><video src="assets/video/c-domicilio.mp4" poster="assets/img/c-domicilio.jpg" muted loop playsinline preload="none" data-auto></video></div>
-      <div class="phone ph-main"><video src="assets/video/c-curl-bayesiano.mp4" poster="assets/img/c-curl-bayesiano.jpg" muted loop playsinline autoplay preload="auto" data-auto></video></div>
+      <div class="phone ph-main"><video src="assets/video/cliente-dominadas.mp4" poster="assets/img/cliente-dominadas.jpg" muted loop playsinline autoplay preload="auto" data-auto></video></div>
       <div class="float fl-1">
         <div class="fl-ico"><span>{ICONOS["casa"]}</span><div><strong>Gimnasio o domicilio</strong>Tú eliges dónde</div></div>
       </div>
