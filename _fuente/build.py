@@ -232,20 +232,22 @@ def bloque_historias(sid, badge, titulo, sub, extra=""):
 # ───────────────── Carrusel de videos ─────────────────
 VIDEOS = [
     # (archivo, título, detalle, categoría, etiqueta, duración)
-    ("c-bulgara", "Sentadilla búlgara", "Pierna y glúteo con mancuerna", "gimnasio", "Gimnasio", "0:07"),
-    ("c-curl-bayesiano", "Curl bayesiano de bíceps", "Bíceps en polea, en estiramiento", "gimnasio", "Gimnasio", "0:07"),
-    ("c-domicilio", "Workout session en casa", "Plancha, bosu y press con mancuerna", "domicilio", "A domicilio", "0:19"),
-    ("c-adulto-mayor", "Rutina diaria en casa", "Fuerza y equilibrio para adulto mayor", "adulto", "Adulto mayor", "0:47"),
-    ("c-balon-medicinal", "Pases con balón medicinal", "Potencia y coordinación sentados", "adulto", "Adulto mayor", "0:08"),
-    ("c-fondos-paralelas", "Fondos en paralelas", "Tríceps y pecho con peso corporal", "gimnasio", "Gimnasio", "0:10"),
-    ("c-core-pareja", "Circuito de core en pareja", "Crunch, plancha y elevación de piernas", "gimnasio", "Gimnasio", "0:20"),
-    ("c-press-piso", "Press de piso con barra", "Fuerza de pecho al aire libre", "domicilio", "Al aire libre", "0:08"),
-    ("c-fondos-asistidos", "Fondos asistidos", "Progresión hacia fondos libres", "gimnasio", "Gimnasio", "0:18"),
-    ("cliente-dominadas", "Dominadas estrictas", "Espalda con peso corporal", "gimnasio", "Gimnasio", "0:07"),
-    ("c-encogimientos", "Encogimientos con mancuernas", "Trapecio y agarre", "gimnasio", "Gimnasio", "0:15"),
-    ("c-core-mancuerna", "Core con mancuerna", "Abdomen al aire libre", "domicilio", "Al aire libre", "0:04"),
-    ("evaluacion-vo2", "Test de VO₂ máx", "Evaluación de rendimiento", "evaluacion", "Evaluación", "0:05"),
-    ("handball-partido", "Pablo en cancha", "Handball competitivo", "handball", "Handball", "0:48"),
+    # Mis clientes: carpeta Fotos_Pagina/Estudiantesclientes
+    ("c-bulgara", "Sentadilla búlgara", "Pierna y glúteo con mancuerna", "clientes", "Cliente", "0:07"),
+    ("c-domicilio", "Workout session en casa", "Plancha, bosu y press con mancuerna", "clientes", "Cliente", "0:19"),
+    ("c-adulto-mayor", "Rutina diaria en casa", "Fuerza y equilibrio para adulto mayor", "clientes", "Cliente", "0:47"),
+    ("c-balon-medicinal", "Pases con balón medicinal", "Potencia y coordinación sentados", "clientes", "Cliente", "0:08"),
+    ("c-fondos-paralelas", "Fondos en paralelas", "Tríceps y pecho con peso corporal", "clientes", "Cliente", "0:10"),
+    ("c-core-pareja", "Circuito de core en pareja", "Crunch, plancha y elevación de piernas", "clientes", "Cliente", "0:20"),
+    ("c-press-piso", "Press de piso con barra", "Fuerza de pecho al aire libre", "clientes", "Cliente", "0:08"),
+    ("c-fondos-asistidos", "Fondos asistidos", "Progresión hacia fondos libres", "clientes", "Cliente", "0:18"),
+    ("c-encogimientos", "Encogimientos con mancuernas", "Trapecio y agarre", "clientes", "Cliente", "0:15"),
+    ("c-core-mancuerna", "Core con mancuerna", "Abdomen al aire libre", "clientes", "Cliente", "0:04"),
+    # Mis entrenamientos: carpeta Fotos_Pagina/PabloMeza
+    ("c-curl-bayesiano", "Curl bayesiano de bíceps", "Bíceps en polea, en estiramiento", "entrenamientos", "Entrenamiento", "0:07"),
+    ("cliente-dominadas", "Dominadas estrictas", "Espalda con peso corporal", "entrenamientos", "Entrenamiento", "0:07"),
+    ("evaluacion-vo2", "Test de VO₂ máx", "Evaluación de rendimiento", "entrenamientos", "Entrenamiento", "0:05"),
+    ("handball-partido", "Pablo en cancha", "Handball competitivo", "entrenamientos", "Entrenamiento", "0:48"),
 ]
 
 
@@ -263,11 +265,8 @@ def carrusel(rid):
     <p class="sub rev">En el gimnasio, en casa o al aire libre. Toca un video para verlo en grande.</p>
     <div class="vfilter rev" data-row="#{rid}" role="group" aria-label="Filtrar videos" style="margin-top:28px">
       <button type="button" aria-pressed="true" data-cat="todos">Todos</button>
-      <button type="button" aria-pressed="false" data-cat="gimnasio">Gimnasio</button>
-      <button type="button" aria-pressed="false" data-cat="domicilio">A domicilio</button>
-      <button type="button" aria-pressed="false" data-cat="adulto">Adulto mayor</button>
-      <button type="button" aria-pressed="false" data-cat="evaluacion">Evaluación</button>
-      <button type="button" aria-pressed="false" data-cat="handball">Handball</button>
+      <button type="button" aria-pressed="false" data-cat="clientes">Mis clientes</button>
+      <button type="button" aria-pressed="false" data-cat="entrenamientos">Mis entrenamientos</button>
     </div>
   </div>
   <div class="wrap">
