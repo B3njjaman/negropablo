@@ -175,7 +175,7 @@ section { padding: 110px 0; position: relative; }
 @keyframes slide { to { transform: translateX(-50%); } }
 
 /* ── Camino tipo Duolingo ── */
-.camino { position: relative; padding: 110px 0 90px; overflow: clip; isolation: isolate; }
+.camino { position: relative; padding: 90px 0 70px; overflow: clip; isolation: isolate; }
 .camino-fondo { position: absolute; z-index: 0; inset: -8% 0; width: 100%; height: 116%; object-fit: cover; object-position: 50% 30%; opacity: .3; pointer-events: none; will-change: transform; }
 /* Capa oscura: la meta se intuye de fondo sin competir con la ruta. */
 .camino::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 15%, rgba(255, 107, 53, .18), transparent 45%), linear-gradient(180deg, rgba(6, 6, 6, .55), rgba(6, 6, 6, .82) 45%, rgba(6, 6, 6, .95)); }
@@ -184,7 +184,7 @@ section { padding: 110px 0; position: relative; }
 .camino-head h2 { margin: 10px 0 0; font-size: clamp(28px, 3.6vw, 46px); }
 .camino-head .sub { max-width: 560px; margin: 10px auto 0; font-size: 16px; }
 .burbuja span { display: block; margin-top: 6px; font-size: 13.5px; line-height: 1.45; color: var(--ink2); }
-.camino-mapa { position: relative; width: min(560px, 100%); height: 1500px; margin-top: 40px; }
+.camino-mapa { position: relative; width: min(560px, 100%); height: 1000px; margin-top: 32px; }
 .camino-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .camino-svg path { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; }
 .camino-base { stroke: rgba(255, 255, 255, .14); stroke-width: 14; stroke-dasharray: 2 22; }
@@ -219,7 +219,7 @@ section { padding: 110px 0; position: relative; }
 .firma { display: block; margin: 10px 0 18px; font-size: 14px; font-weight: 600; color: var(--ink3); }
 @media (max-width: 640px) {
   .camino { padding: 80px 0 70px; }
-  .camino-mapa { height: 1250px; margin-top: 28px; }
+  .camino-mapa { height: 880px; margin-top: 24px; }
   .camino-head .sub { font-size: 14px; }
   .burbuja span { font-size: 12px; margin-top: 4px; }
   .bola { width: 54px; height: 54px; font-size: 15px; box-shadow: 0 6px 0 #0d0d0d, 0 14px 24px -10px rgba(0, 0, 0, .8); }
